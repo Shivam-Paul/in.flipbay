@@ -1,0 +1,106 @@
+package in.flipbay.testcase;
+
+import static org.junit.Assert.*;
+
+import java.util.List;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+
+import in.flipbay.dao.CategoryDAO;
+import in.flipbay.domain.Category;
+
+@Component
+@Repository
+public class CategoryDAOTestCase {
+
+	@Autowired
+	private static CategoryDAO categoryDAO;
+	
+	@Autowired
+	private static Category category;
+	
+	@Autowired
+	private static AnnotationConfigApplicationContext context;
+	
+	@BeforeClass
+	public static void init() {
+		
+		context = new AnnotationConfigApplicationContext();
+		context.scan("in.flipbay");
+		context.refresh();
+		
+		categoryDAO = (CategoryDAO)context.getBean("categoryDAO");
+		
+		category = (Category)context.getBean("category");
+	}
+	
+	@Test
+	public void saveCategoryTestCase() {
+		
+		category.setID("ID03");
+		category.setName("obj1");
+		boolean status = categoryDAO.save(category);
+		assertEquals("save category test case", true, status);
+	}
+	
+	@Test
+	public void updateCategoryTestCase() {
+		Category category=categoryDAO.get("ID02");
+		category.setID("ID02");
+		category.setName("test1");
+		category.setDescription(category.getDescription());
+		boolean status = categoryDAO.update(category);
+		assertEquals("update category test case", true, status);
+		
+	}
+	
+	@Test
+	public void getCategorySuccessTestCase() {
+		
+		category = categoryDAO.get("ID02");
+		
+		assertNotNull("get category test case", category);
+		
+	}
+	
+	@Test
+	public void getCategoryFailureTestCase() {
+		
+		category = categoryDAO.get("Fail");
+		
+		assertNull("get category test case", category);
+		
+	}
+	
+	@Test
+	public void deleteCategorySuccessTestCase()
+	{
+	boolean status =	categoryDAO.delete("ID01");
+	assertEquals("delete category succss test case" , true, status);
+	
+	}
+	
+	@Test
+	public void deleteCategoryFailureTestCase()
+	{
+	boolean status =	categoryDAO.delete("Fail");
+	assertEquals("delete category failure test case" , false, status);
+	
+	}
+	
+	@Test
+	public void getAllCategoryTestCase()
+	{
+	List<Category>	category = categoryDAO.list();
+	
+	assertEquals("get all category " , 1, category.size() );
+	
+	}
+	
+
+}
