@@ -2,10 +2,15 @@ package in.flipbay.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import in.flipbay.dao.UserDAO;
-import in.flipbay.domain.Category;
 import in.flipbay.domain.User;
 
 //Annotation
@@ -45,6 +49,11 @@ public class UserController {
 		else
 		{
 			mv.addObject("welcomeMessage", "Welcome : " +user.getName());
+			
+			if(user.getRole()=='A')
+			{
+				mv.addObject("isAdmin", true);
+			}
 		}
 		return mv;
 	}
@@ -101,7 +110,39 @@ public class UserController {
 		mv.addObject("allUsers", allUsers);
 		return mv;
 	}
-
+	
+	@GetMapping("user/forgotPassword") 
+	public ModelAndView getForgotPassword()
+	{
+		
+		ModelAndView mv=new ModelAndView("home");
+		mv.addObject("isUserClickedForgotPassword", true);
+		return mv;
+	}
+	
+	@PostMapping("/user/securityQues")
+	public ModelAndView getForgotPass(@RequestParam("uname") String id) {
+		
+		ModelAndView mv = new ModelAndView("home");
+		User user = userDAO.get(id);
+		mv.addObject(" securityQuestion" ,user.getSecurityQuestion());
+		mv.addObject("isUserClickedSecurityQues", true);
+		return mv;
+	}
+	
+	
+//	@GetMapping("/register") 
+//	public String register(Model model) { 
+//	    model.addAttribute("user", user); 
+//	    return "login"; 
+//	}
+	  
+	  @PostMapping("/registerProcess")
+	  public ModelAndView addUser(HttpServletRequest request, HttpServletResponse response,
+	  @ModelAttribute("user") User user) {
+	  userDAO.register(user);
+	  return new ModelAndView("welcome", "Name", user.getName());
+	  }
 }
 
 

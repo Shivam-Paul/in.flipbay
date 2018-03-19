@@ -17,5 +17,7 @@ public interface UserDAO {
 	public List<User> list();
 
 	public User validate(String id, String password);
+	
+	public boolean register(User user);
 
 }

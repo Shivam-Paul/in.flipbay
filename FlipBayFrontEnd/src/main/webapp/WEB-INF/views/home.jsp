@@ -104,5 +104,17 @@ span.psw {
 	</c:if>
 	<c:if test="${isUserClickedAddCategory==true}">
 		<jsp:include page="addCategory.jsp"></jsp:include>
-	</c:if></body>
+	</c:if>
+	<c:if test="${isUserClickedForgotPassword==true}">
+		<jsp:include page="forgot-password.jsp"></jsp:include>
+	</c:if>
+	<c:if test="${isUserClickedSecurityQues==true}">
+		<jsp:include page="securityQues.jsp"></jsp:include>
+	</c:if>
+	<c:if test="${isAdmin==true}">
+		<jsp:include page="admin/adminHome.jsp"></jsp:include>
+	</c:if>
+	
+	</body>
+	
 </html>

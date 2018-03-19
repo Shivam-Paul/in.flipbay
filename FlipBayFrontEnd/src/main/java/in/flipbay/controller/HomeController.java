@@ -2,6 +2,8 @@ package in.flipbay.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,9 @@ public class HomeController {
 	
 	@Autowired
 	private CategoryDAO categoryDAO;
+	
+	@Autowired
+	private HttpSession httpSession;
 
 	
 	//http://localhost:8080/ShoppingCartFrontEnd/
@@ -24,8 +29,8 @@ public class HomeController {
 		ModelAndView mv = new ModelAndView("home");
 		List<Category> categories = categoryDAO.list();
 		
-		mv.addObject("categories", categories);
-		return mv;
+		httpSession.setAttribute("categories", categories);
+return mv;
 		
 	}
 	

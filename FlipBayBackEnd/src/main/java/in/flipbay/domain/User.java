@@ -21,8 +21,22 @@ public class User {
 	@Column(name="password")
 	private String pwd;
 	private String mobile;
-	private String role;
+	private Character role;
 	private Date registeredDate;
+	private String securityQuestion;
+	private String securityAnswer;
+	public String getSecurityQuestion() {
+		return securityQuestion;
+	}
+	public void setSecurityQuestion(String securityQuestion) {
+		this.securityQuestion = securityQuestion;
+	}
+	public String getSecurityAnswer() {
+		return securityAnswer;
+	}
+	public void setSecurityAnswer(String securityAnswer) {
+		this.securityAnswer = securityAnswer;
+	}
 	public String getEmailID() {
 		return emailID;
 	}
@@ -47,10 +61,10 @@ public class User {
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
-	public String getRole() {
+	public Character getRole() {
 		return role;
 	}
-	public void setRole(String role) {
+	public void setRole(Character role) {
 		this.role = role;
 	}
 	public Date getRegisteredDate() {

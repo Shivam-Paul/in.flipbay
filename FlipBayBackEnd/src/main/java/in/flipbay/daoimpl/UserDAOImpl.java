@@ -3,12 +3,14 @@ package in.flipbay.daoimpl;
 import java.sql.Date;
 import java.util.List;
 
+import javax.sql.DataSource;
 import javax.transaction.Transactional;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import in.flipbay.domain.User;
@@ -25,6 +27,8 @@ public class UserDAOImpl implements UserDAO {
 	
 	@Autowired
 	private User user;
+	
+	
 	
 	
 	public UserDAOImpl(SessionFactory sessionFactory)
@@ -44,7 +48,7 @@ public class UserDAOImpl implements UserDAO {
 
 	public boolean save(User user) {
 		try {
-			user.setRole("C");
+			user.setRole('C');
 			user.setRegisteredDate(new Date(System.currentTimeMillis()));
 			getSession().save(user);
 			return true;
@@ -93,10 +97,25 @@ public class UserDAOImpl implements UserDAO {
 		return getSession().createQuery("from User").list();
 	}
 
+	@SuppressWarnings("deprecation")
 	public User validate(String emailID, String password) {
 		// select * from user where id ='niit' and password ='niit'
 		return (User)getSession().createCriteria(User.class).add(Restrictions.eq("emailID",emailID)).
 				add(Restrictions.eq("pwd", password)).uniqueResult();
+		
+	}
+	
+	
+
+	public boolean register(User user) {
+		
+		try {
+			getSession().save(user);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 		
 	}
 

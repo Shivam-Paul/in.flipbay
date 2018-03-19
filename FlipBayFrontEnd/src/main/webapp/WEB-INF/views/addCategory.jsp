@@ -79,6 +79,8 @@ span.psw {
 
 </head>
 <body>
+
+<h2> Add Category Form</h2>
 	<%-- <spring:url value="/category/save" var="categoryActionUrl" />
 	<form:form action="/category/save" modelAttribute="categoryForm"
 		method="POST">

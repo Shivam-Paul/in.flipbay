@@ -1,6 +1,7 @@
 package in.flipbay.controller;
 
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,9 @@ public class CategoryController {
 	
 	@Autowired
 	private Category category;
+	
+//	@Autowired
+//	private Random randomNum;
 	
 	//this controller to get all categories
 	@GetMapping("/category/getAll")
@@ -51,6 +55,14 @@ public class CategoryController {
 			, @RequestParam("categoryDescription") String categoryDescription)  {
 		ModelAndView mv = new ModelAndView("home");
 		
+		
+//		while(true) {
+//		if(categoryDAO.get("CAT_"+ randomNum.nextInt(100))!=null) {
+//			categoryID = "CAT_"+ randomNum.nextInt(100);
+//			break;
+//		}}
+		
+		//System.out.println(categoryID);
 
 		if(categoryDAO.save(category) == true) { 	
 			mv.addObject("successMessage","The category saved successfully");	
