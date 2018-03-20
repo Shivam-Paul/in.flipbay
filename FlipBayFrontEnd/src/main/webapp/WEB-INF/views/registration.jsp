@@ -128,6 +128,16 @@ span.psw {
                         </td>
                     </tr>
                     
+                    <select class="form-control" name="menu" id="menu">         
+      <c:forEach var="categories" items="${categories}">
+          <option value="${category.name}">${category.name} 
+          <c:if test="${menu.name == category.name}">
+           selected
+           </c:if>
+          </option>
+      </c:forEach>
+   </select>
+                    
                     <tr>
                         <td></td>
                         <td>

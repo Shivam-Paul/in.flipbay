@@ -6,11 +6,13 @@ import javax.transaction.Transactional;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import in.flipbay.dao.CategoryDAO;
 import in.flipbay.domain.Category;
+import in.flipbay.domain.User;
 
 @Repository("categoryDAO")
 @Transactional
@@ -38,14 +40,15 @@ public CategoryDAOImpl(SessionFactory sessionFactory) {
 	}
 
 	public boolean save(Category category) {
+		
 		try {
-			category.setDescription(category.getName());
-			getSession().save(category);
+			getSession().update(category);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
-		}		
+		}
+			
 	}
 
 	public boolean update(Category category) {

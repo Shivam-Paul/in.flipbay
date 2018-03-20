@@ -10,14 +10,23 @@
 </head>
 <body>
 <h2>
+<c:if test="${isAdmin==true}">
 <a href="manageCategories">Manage Categories</a>
 <a href="manageSuppliers">Manage Suppliers</a>
 <a href="manageProducts">Manage Products</a>
+</c:if>
 </h2>
 
-<jsp:include page="category.jsp"></jsp:include>
-<jsp:include page="supplier.jsp"></jsp:include>
-<jsp:include page="product.jsp"></jsp:include>
+<c:if test="${isUserClickedManageCategories==true}">
+		<jsp:include page="category.jsp"></jsp:include>
+	</c:if>
+	<c:if test="${isUserClickedManageSuppliers==true}">
+		<jsp:include page="supplier.jsp"></jsp:include>
+	</c:if>
+	<c:if test="${isUserClickedManageProducts==true}">
+		<jsp:include page="product.jsp"></jsp:include>
+	</c:if>
+
 
 
 </body>

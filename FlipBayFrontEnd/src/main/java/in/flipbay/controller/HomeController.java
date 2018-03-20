@@ -30,7 +30,7 @@ public class HomeController {
 		List<Category> categories = categoryDAO.list();
 		
 		httpSession.setAttribute("categories", categories);
-return mv;
+		return mv;
 		
 	}
 	
@@ -44,7 +44,7 @@ return mv;
 		
 	}
 	
-	@GetMapping("/register")
+	@GetMapping("/registration")
 	public ModelAndView  registration()
 	{
 		
@@ -54,21 +54,22 @@ return mv;
 		
 	}
 	
-	@GetMapping("/category")
-	public ModelAndView  category()
+	
+	
+	@GetMapping("/manageCategories")
+	public ModelAndView  addCategory()
 	{
-		
 		ModelAndView mv = new ModelAndView("home");
-		mv.addObject("isUserClickedCategory", true);
+		mv.addObject("isUserClickedManageCategories", true);
 		return mv;
 		
 	}
 	
-	@GetMapping("/addCategory")
-	public ModelAndView  addCategory()
+	@GetMapping("/addProduct")
+	public ModelAndView  addProduct()
 	{
 		ModelAndView mv = new ModelAndView("home");
-		mv.addObject("isUserClickedAddCategory", true);
+		mv.addObject("isUserClickedAddProduct", true);
 		return mv;
 		
 	}

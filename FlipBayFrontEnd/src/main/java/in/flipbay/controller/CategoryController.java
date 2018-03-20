@@ -3,10 +3,13 @@ package in.flipbay.controller;
 import java.util.List;
 import java.util.Random;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +31,9 @@ public class CategoryController {
 	
 //	@Autowired
 //	private Random randomNum;
+	
+	@Autowired
+	HttpSession httpSession;
 	
 	//this controller to get all categories
 	@GetMapping("/category/getAll")
@@ -55,6 +61,10 @@ public class CategoryController {
 			, @RequestParam("categoryDescription") String categoryDescription)  {
 		ModelAndView mv = new ModelAndView("home");
 		
+		category.setID(categoryID);
+		category.setName(categoryName);
+		category.setDescription(categoryDescription);
+		
 		
 //		while(true) {
 //		if(categoryDAO.get("CAT_"+ randomNum.nextInt(100))!=null) {
@@ -64,12 +74,16 @@ public class CategoryController {
 		
 		//System.out.println(categoryID);
 
-		if(categoryDAO.save(category) == true) { 	
-			mv.addObject("successMessage","The category saved successfully");	
+		if(categoryDAO.save(category)) {	
+			mv.addObject("successMessage","The category saved successfully");
+			
+			List<Category> categories = categoryDAO.list();
+			httpSession.setAttribute("categories", categories);
 		}
-		else {	
-			mv.addObject("failureMessage", "The category failed to save");
+		else {
+			mv.addObject("errorMessage","The category failed to save");
 		}
+		
 		return mv;
 	}
 	
@@ -92,7 +106,7 @@ public class CategoryController {
 	
 	//this controller is to update the category details
 	@PutMapping("/category/update")
-	public ModelAndView updateCategory(@RequestBody Category category) {
+	public ModelAndView updateCategory(@ModelAttribute Category category) {
 		ModelAndView mv = new ModelAndView("home");
 		if (categoryDAO.update(category) == true) {
 			mv.addObject("successMessage", "The category updated successfully");

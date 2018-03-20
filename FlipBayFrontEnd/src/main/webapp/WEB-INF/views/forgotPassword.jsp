@@ -8,5 +8,12 @@
 </head>
 <body>
 
-</body>
+<form action="securityQues" method="post">
+  
+
+  <div class="container">
+    <label for="emailID"><b>Username</b></label>
+    <input type="text" placeholder="Enter Your EmailID" name="emailID" required>
+
+<button type="submit">Submit</button></div></form></body>
 </html>

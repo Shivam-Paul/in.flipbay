@@ -9,20 +9,23 @@
 <body>
 
 <div>
-<center>Security ques is:</br>
+<center>Your Security question is:
 ${securityQuestion}</center>
 
 </div>
 
 
-<form action="user/checkQues" method="post">
+<form action="checkQues" method="post">
   
 
   <div class="container">
     <label for="SecurityAnswer"><b>SecurityAnswer</b></label>
     <input type="text" placeholder="Enter Your Answer" name="SecurityAnswer" required>
 
-<button type="submit">Submit</button></div></form></body>
+<button type="submit">Submit</button></div></form>
+
+
+</body>
 
 </body>
 </html>

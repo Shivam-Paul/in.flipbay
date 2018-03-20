@@ -7,6 +7,33 @@
 <title>Insert title here</title>
 </head>
 <body>
-category
+${successMessage}
+${errorMessage}
+<form action="saveCategory" method="post">
+
+<tr><td><b>ID</b></td><td>
+<input type="text" placeholder="Enter Category ID"
+					 name="categoryID" required="true" />
+</td>
+</tr>
+<tr><td><b>Name</b></td><td>
+<input type="text" placeholder="Enter Category Name"
+					 name="categoryName" required="true" />
+</td>
+</tr>
+<tr><td><b>Description</b></td><td>
+<input type="text" placeholder="Enter Category Description"
+					 name="categoryDescription" required="true" />
+</td>
+</tr>
+
+
+
+</form>
+
+
+
+
+
 </body>
 </html>

@@ -76,17 +76,17 @@ span.psw {
 </head>
 <body>
 	<center>
-		<h2>Welcome to shopping cart</h2>
+		<h2>Welcome to FlipBay</h2>
 	</center>
-	${welcomeMessage}
+		${welcomeMessage}
+	
 	${errorMessage}
 	
 	
 	<br>
 	<a href="login"> Existing user</a>
-	<a href="register"> New User</a>
-	<a href="category">Category</a>
-	<a href="addCategory">Add Category</a>
+	<a href="registration"> New User</a>
+	
 	<hr color="blue" size="5">
 	
 	
@@ -99,20 +99,21 @@ span.psw {
 	<c:if test="${isUserClickedRegister==true}">
 		<jsp:include page="registration.jsp"></jsp:include>
 	</c:if>
-	<c:if test="${isUserClickedCategory==true}">
-		<jsp:include page="categories.jsp"></jsp:include>
-	</c:if>
-	<c:if test="${isUserClickedAddCategory==true}">
-		<jsp:include page="addCategory.jsp"></jsp:include>
+	
+	<c:if test="${isUserClickedManageCategories==true}">
+		<jsp:include page="admin/category.jsp"></jsp:include>
 	</c:if>
 	<c:if test="${isUserClickedForgotPassword==true}">
-		<jsp:include page="forgot-password.jsp"></jsp:include>
+		<jsp:include page="forgotPassword.jsp"></jsp:include>
 	</c:if>
 	<c:if test="${isUserClickedSecurityQues==true}">
 		<jsp:include page="securityQues.jsp"></jsp:include>
 	</c:if>
 	<c:if test="${isAdmin==true}">
 		<jsp:include page="admin/adminHome.jsp"></jsp:include>
+	</c:if>
+	<c:if test="${isUserClickedManageProducts==true}">
+		<jsp:include page="admin/product.jsp"></jsp:include>
 	</c:if>
 	
 	</body>

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +30,9 @@ public class UserController {
 	
 	@Autowired
 	private User user;
+	
+	@Autowired
+	private HttpSession httpSession;
 	
 	
 	//will send user id and password from jsp to controller
@@ -121,26 +125,52 @@ public class UserController {
 	}
 	
 	@PostMapping("/user/securityQues")
-	public ModelAndView getForgotPass(@RequestParam("uname") String id) {
+	public ModelAndView getSecurityQues(@RequestParam("emailID") String id) {
 		
 		ModelAndView mv = new ModelAndView("home");
 		User user = userDAO.get(id);
-		mv.addObject(" securityQuestion" ,user.getSecurityQuestion());
+		httpSession.setAttribute("id", id);
+		mv.addObject("securityQuestion" ,user.getSecurityQuestion());
 		mv.addObject("isUserClickedSecurityQues", true);
 		return mv;
 	}
 	
+	@PostMapping("/user/checkQues")
+	public ModelAndView checkSecurityQues(@RequestParam("SecurityAnswer") String SecurityAnswer) {
+		
+		ModelAndView mv = new ModelAndView("home");
+		User user = userDAO.get(id);
+		String secAnswer = user.getSecurityAnswer();
+		
+		if(secAnswer.equals(SecurityAnswer)) {
+			mv.addObject("validSecurityAnswer", true);
+		}
+		else {
+		mv.addObject("invalidSecurityAnswer", "Invalid Security Answer");
+		}
+		return mv;
+	}
 	
-//	@GetMapping("/register") 
-//	public String register(Model model) { 
-//	    model.addAttribute("user", user); 
-//	    return "login"; 
-//	}
+	@GetMapping("/user/changePassword")
+	public ModelAndView changePassword(@RequestParam("NewPassword") String newPassword) {
+		
+		ModelAndView mv = new ModelAndView("home");
+		
+		
+		
+		mv.addObject("validSecurityAnswer", true);
+		
+		return mv;
+	}
+	
+	
+	
 	  
 	  @PostMapping("/registerProcess")
 	  public ModelAndView addUser(HttpServletRequest request, HttpServletResponse response,
-	  @ModelAttribute("user") User user) {
-	  userDAO.register(user);
+	  @ModelAttribute("user") User user,Model model) {
+		  model.addAttribute("user", user);
+	  userDAO.save(user);
 	  return new ModelAndView("welcome", "Name", user.getName());
 	  }
 }
