@@ -3,14 +3,14 @@ package in.flipbay.daoimpl;
 import java.sql.Date;
 import java.util.List;
 
-import javax.sql.DataSource;
+//import javax.sql.DataSource;
 import javax.transaction.Transactional;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
+//import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import in.flipbay.domain.User;
@@ -46,11 +46,11 @@ public class UserDAOImpl implements UserDAO {
 		return sessionFactory.getCurrentSession();
 	}
 
-	public boolean save(User user) {
+	public boolean saveOrUpdate(User user) {
 		try {
 			user.setRole('C');
 			user.setRegisteredDate(new Date(System.currentTimeMillis()));
-			getSession().save(user);
+			getSession().saveOrUpdate(user);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -58,7 +58,7 @@ public class UserDAOImpl implements UserDAO {
 		}
 	}
 
-	public boolean update(User user) {
+	/*public boolean update(User user) {
 		try {
 			getSession().update(user);
 			return true;
@@ -66,7 +66,7 @@ public class UserDAOImpl implements UserDAO {
 			e.printStackTrace();
 			return false;
 		}
-	}
+	}*/
 	
 	public User get(String emailID) {
 

@@ -11,19 +11,19 @@
 <body>
 <h2>
 <c:if test="${isAdmin==true}">
-<a href="manageCategories">Manage Categories</a>
-<a href="manageSuppliers">Manage Suppliers</a>
-<a href="manageProducts">Manage Products</a>
+<a href="category">Manage Categories</a>
+<a href="supplier">Manage Suppliers</a>
+<a href="product">Manage Products</a>
 </c:if>
 </h2>
 
-<c:if test="${isUserClickedManageCategories==true}">
+<c:if test="${isAdminClickedManageCategories==true}">
 		<jsp:include page="category.jsp"></jsp:include>
 	</c:if>
-	<c:if test="${isUserClickedManageSuppliers==true}">
+	<c:if test="${isAdminClickedManageSuppliers==true}">
 		<jsp:include page="supplier.jsp"></jsp:include>
 	</c:if>
-	<c:if test="${isUserClickedManageProducts==true}">
+	<c:if test="${isAdminClickedManageProducts==true}">
 		<jsp:include page="product.jsp"></jsp:include>
 	</c:if>
 

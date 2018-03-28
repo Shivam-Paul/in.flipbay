@@ -42,19 +42,19 @@ public class CategoryDAOTestCase {
 	@Test
 	public void saveCategoryTestCase() {
 		
-		category.setID("ID03");
+		category.setId("ID03");
 		category.setName("obj1");
-		boolean status = categoryDAO.save(category);
+		boolean status = categoryDAO.saveOrUpdate(category);
 		assertEquals("save category test case", true, status);
 	}
 	
 	@Test
 	public void updateCategoryTestCase() {
 		Category category=categoryDAO.get("ID02");
-		category.setID("ID02");
+		category.setId("ID02");
 		category.setName("test1");
 		category.setDescription(category.getDescription());
-		boolean status = categoryDAO.update(category);
+		boolean status = categoryDAO.saveOrUpdate(category);
 		assertEquals("update category test case", true, status);
 		
 	}
@@ -62,7 +62,7 @@ public class CategoryDAOTestCase {
 	@Test
 	public void getCategorySuccessTestCase() {
 		
-		category = categoryDAO.get("ID02");
+		category = categoryDAO.get("CAT_002");
 		
 		assertNotNull("get category test case", category);
 		

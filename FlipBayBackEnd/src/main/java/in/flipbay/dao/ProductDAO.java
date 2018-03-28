@@ -6,10 +6,8 @@ import in.flipbay.domain.Product;
 
 public interface ProductDAO {
 	
-public boolean save(Product product);
-	
-	public boolean update(Product product);
-	
+public boolean saveOrUpdate(Product product);
+		
 	public Product get(String id);
 	
 	public boolean delete(String id);

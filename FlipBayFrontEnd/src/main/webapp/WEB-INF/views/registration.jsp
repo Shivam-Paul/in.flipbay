@@ -75,83 +75,66 @@ span.psw {
 
 <h2> Registration Page</h2>
 
-<form:form id="registrationForm" modelAttribute="user" action="registerProcess" method="post">
-                <table align="center">
-                    <tr>
-                        <td>
-                            <form:label path="emailID">EmailID</form:label>
-                        </td>
-                        <td>
-                            <form:input path="emailID" name="emailID" id="emailID" />
-                        </td>
-                    </tr>
-                    <tr>
-                    <tr>
-                        <td>
-                            <form:label path="name">Name</form:label>
-                        </td>
-                        <td>
-                            <form:input path="name" name="name" id="name" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <form:label path="password">Password</form:label>
-                        </td>
-                        <td>
-                            <form:password path="password" name="password" id="password" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <form:label path="mobile">Mobile Number</form:label>
-                        </td>
-                        <td>
-                            <form:input path="mobile" name="mobile" id="mobile" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <form:label path="securityQuestion">Security Question</form:label>
-                        </td>
-                        <td>
-                            <form:input path="securityQuestion" name="securityQuestion" id="securityQuestion" />
-                        </td>
-                    </tr>
-                    <tr>
-                    <tr>
-                        <td>
-                            <form:label path="securityAnswer">Security Answer</form:label>
-                        </td>
-                        <td>
-                            <form:input path="securityAnswer" name="securityAnswer" id="securityAnswer" />
-                        </td>
-                    </tr>
-                    
-                    <select class="form-control" name="menu" id="menu">         
-      <c:forEach var="categories" items="${categories}">
-          <option value="${category.name}">${category.name} 
-          <c:if test="${menu.name == category.name}">
-           selected
-           </c:if>
-          </option>
-      </c:forEach>
-   </select>
-                    
-                    <tr>
-                        <td></td>
-                        <td>
-                            <form:button id="register" name="register">Register</form:button>
-                        </td>
-                    </tr>
-                    <tr></tr>
-                    <tr>
-                        <td></td>
-                        <td><a href="home.jsp">Home</a>
-                        </td>
-                    </tr>
-                </table>
-            </form:form>
+<form action="user/save" method="post">
+		<table>
+
+			<tr>
+				<td><b>Email ID</b></td>
+
+
+				<td><input type="text" placeholder="Enter Email ID"
+					name="emailID"  required="true" /></td>
+			</tr>
+			<tr>
+				<td><b>Name</b></td>
+				<td><input type="text" placeholder="Enter UserName"
+					name="name" required="true" /></td>
+			</tr>
+			<tr>
+
+				<td><b>Password</b></td>
+				<td><input type="text" placeholder="Enter Password"
+					name="password" required="true" /></td>
+			</tr>
+			<tr>
+
+				<td><b>Confirm Password</b></td>
+				<td><input type="text" placeholder="Comfirm Password"
+					name="confirmPassword" required="true" /></td>
+			</tr>
+
+			<tr>
+
+				<td><b>Mobile Number</b></td>
+				<td><input type="text" placeholder="Enter Mobile Number"
+					name="mobile"  /></td>
+				
+			</tr>
+			<tr>
+
+				<td><b>Security Question</b></td>
+				<td><input type="text" placeholder="Enter Security Question"
+					name="securityQuestion"  required="true"/></td>
+				
+			</tr>
+			<tr>
+
+				<td><b>Security Answer</b></td>
+				<td><input type="text" placeholder="Enter Security Answer"
+					name="securityAnswer" required="true" /></td>
+				
+			</tr>
+			
+
+
+
+			<tr>
+				<td>
+					<button type="submit">Register</button>
+				</td>
+			</tr>
+		</table>
+	</form>
 
 
 

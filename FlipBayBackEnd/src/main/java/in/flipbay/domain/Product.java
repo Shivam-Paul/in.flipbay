@@ -19,6 +19,7 @@ public class Product {
 	private String description;
 	private String SupplierID;
 	private String CategoryID;
+	private String price;
 	@ManyToOne
 	@JoinColumn(name = "categoryID", updatable = false, insertable = false, nullable =false)
 	private Category category;
@@ -40,10 +41,16 @@ public class Product {
 	public void setSupplier(Supplier supplier) {
 		this.supplier = supplier;
 	}
-	public String getID() {
+	public String getPrice() {
+		return price;
+	}
+	public void setPrice(String price) {
+		this.price = price;
+	}
+	public String getId() {
 		return id;
 	}
-	public void setID(String id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getName() {

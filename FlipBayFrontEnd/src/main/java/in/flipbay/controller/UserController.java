@@ -1,5 +1,6 @@
 package in.flipbay.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -52,16 +52,19 @@ public class UserController {
 		}
 		else
 		{
-			mv.addObject("welcomeMessage", "Welcome : " +user.getName());
+			httpSession.setAttribute("welcomeMessage", user.getName());
+			httpSession.setAttribute("loggedUserId", user.getEmailID());
+			httpSession.setAttribute("userLoggedIn", true);
 			
 			if(user.getRole()=='A')
 			{
-				mv.addObject("isAdmin", true);
+				httpSession.setAttribute("isAdmin", true);
+				//mv.addObject("isAdmin", true);
 			}
 		}
 		return mv;
 	}
-	
+		
 	@DeleteMapping("/user/delete/{emailid}")
 	public ModelAndView deleteUser(@RequestParam("id") String emailid) {
 		ModelAndView mv = new ModelAndView("home");
@@ -73,7 +76,7 @@ public class UserController {
 		return mv;
 	}
 	
-	@PutMapping("/user/update")
+	/*@PutMapping("/user/update")
 	public ModelAndView updateUser(@RequestBody User user) {
 		ModelAndView mv = new ModelAndView("home");
 		if (userDAO.update(user) == true) {
@@ -82,13 +85,26 @@ public class UserController {
 			mv.addObject("errorMessage", "Could not update the user.");
 		}
 		return mv;
-	}
+	}*/
 	
 	//This method is used for user registration
 	@PostMapping("/user/save")
-	public ModelAndView saveUser(@RequestBody User user)  {
-		ModelAndView mv = new ModelAndView();
-		if(userDAO.save(user) == true) { 	
+	public ModelAndView saveUser(@RequestParam("emailID") String emailID, @RequestParam("name") String name,
+			@RequestParam("password") String password,@RequestParam("mobile") String mobile,
+			
+			@RequestParam("securityQuestion") String securityQuestion,@RequestParam("securityAnswer") String securityAnswer)  {
+		ModelAndView mv = new ModelAndView("redirect:/login");
+		user.setEmailID(emailID);
+		user.setName(name);
+		user.setPwd(password);
+		user.setMobile(mobile);
+		//user.setRole(role);
+		//user.setRegisteredDate(date);
+		user.setSecurityQuestion(securityQuestion);
+		user.setSecurityAnswer(securityAnswer);
+		
+		
+		if(userDAO.saveOrUpdate(user) == true) { 	
 			mv.addObject("successMessage","The user saved successfully");	
 		}
 		else {	
@@ -106,7 +122,7 @@ public class UserController {
 		return mv;
 	}
 	
-	@GetMapping("/user/getAll")
+	@GetMapping("user/getAll")
 	public ModelAndView getAllUsers() {
 		
 		ModelAndView mv = new ModelAndView();
@@ -124,26 +140,27 @@ public class UserController {
 		return mv;
 	}
 	
-	@PostMapping("/user/securityQues")
+	@PostMapping("user/securityQues")
 	public ModelAndView getSecurityQues(@RequestParam("emailID") String id) {
 		
 		ModelAndView mv = new ModelAndView("home");
-		User user = userDAO.get(id);
-		httpSession.setAttribute("id", id);
+		user = userDAO.get(id);
+		httpSession.setAttribute("forgotPasswordUser", user);
 		mv.addObject("securityQuestion" ,user.getSecurityQuestion());
 		mv.addObject("isUserClickedSecurityQues", true);
 		return mv;
 	}
 	
-	@PostMapping("/user/checkQues")
+	@PostMapping("user/checkQues")
 	public ModelAndView checkSecurityQues(@RequestParam("SecurityAnswer") String SecurityAnswer) {
 		
 		ModelAndView mv = new ModelAndView("home");
-		User user = userDAO.get(id);
-		String secAnswer = user.getSecurityAnswer();
+		user = (User)httpSession.getAttribute("forgotPasswordUser");
+		String dbSecAnswer = user.getSecurityAnswer();
 		
-		if(secAnswer.equals(SecurityAnswer)) {
+		if(dbSecAnswer.equals(SecurityAnswer)) {
 			mv.addObject("validSecurityAnswer", true);
+			mv.addObject("isUserClickedChangePassword", true);
 		}
 		else {
 		mv.addObject("invalidSecurityAnswer", "Invalid Security Answer");
@@ -151,14 +168,24 @@ public class UserController {
 		return mv;
 	}
 	
-	@GetMapping("/user/changePassword")
+	@PostMapping("user/changePassword")
 	public ModelAndView changePassword(@RequestParam("NewPassword") String newPassword) {
 		
-		ModelAndView mv = new ModelAndView("home");
+		ModelAndView mv = new ModelAndView("redirect:/");
+		
+		user = (User)httpSession.getAttribute("forgotPasswordUser");
+		user.setEmailID(user.getEmailID());
+		user.setPwd(newPassword);
+		user.setName(user.getName());
+		user.setMobile(user.getMobile());
+		user.setRegisteredDate(user.getRegisteredDate());
+		user.setSecurityQuestion(user.getSecurityQuestion());
+		user.setSecurityAnswer(user.getSecurityAnswer());
+		user.setRole(user.getRole());
+		userDAO.saveOrUpdate(user);
 		
 		
-		
-		mv.addObject("validSecurityAnswer", true);
+		mv.addObject("passwordChanged", "Your Password has been updated successfully");
 		
 		return mv;
 	}
@@ -170,9 +197,38 @@ public class UserController {
 	  public ModelAndView addUser(HttpServletRequest request, HttpServletResponse response,
 	  @ModelAttribute("user") User user,Model model) {
 		  model.addAttribute("user", user);
-	  userDAO.save(user);
+	  userDAO.saveOrUpdate(user);
 	  return new ModelAndView("welcome", "Name", user.getName());
 	  }
+	  
+	  @GetMapping("/logout")
+	  public ModelAndView logout() {
+		  
+		  ModelAndView mv = new ModelAndView("home");
+		  
+		  user = null;
+		  
+		  return mv;
+		  
+	  }
+	  
+	 @GetMapping("/editProfile")
+	 public ModelAndView editProfile() {
+		 
+		 ModelAndView mv = new ModelAndView("home");
+		 String userId = (String)httpSession.getAttribute("loggedUserId");
+		 System.out.println(userId);
+		 user = userDAO.get(userId);
+		 System.out.println(user.getRegisteredDate());
+		 httpSession.setAttribute("userDetails", user);
+		 mv.addObject("isUserClickedEditProfile", true);
+		 return mv;
+		 
+	 }
+	  
+	  
+	  
+	  
 }
 
 

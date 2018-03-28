@@ -38,13 +38,13 @@ public class ProductDAOTestCase {
 	@Test
 	public void saveproductTestCase() {
 		
-		product.setID("ID01");
+		product.setId("ID01");
 		product.setName("obj1");
-		boolean status = productDAO.save(product);
+		boolean status = productDAO.saveOrUpdate(product);
 		assertEquals("save product test case", true, status);
 	}
 	
-	@Test
+	/*@Test
 	public void updateproductTestCase() {
 		
 		Product product=productDAO.get("ID01");
@@ -54,7 +54,7 @@ public class ProductDAOTestCase {
 		boolean status = productDAO.update(product);
 		assertEquals("update category test case", true, status);
 		
-	}
+	}*/
 	
 	@Test
 	public void getproductSuccessTestCase() {

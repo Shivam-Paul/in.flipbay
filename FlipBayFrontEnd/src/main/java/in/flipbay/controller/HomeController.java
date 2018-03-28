@@ -27,9 +27,9 @@ public class HomeController {
 	public ModelAndView  home()
 	{
 		ModelAndView mv = new ModelAndView("home");
-		List<Category> categories = categoryDAO.list();
+		List<Category> allCategories = categoryDAO.list();
 		
-		httpSession.setAttribute("categories", categories);
+		httpSession.setAttribute("allCategories", allCategories);
 		return mv;
 		
 	}
@@ -54,24 +54,5 @@ public class HomeController {
 		
 	}
 	
-	
-	
-	@GetMapping("/manageCategories")
-	public ModelAndView  addCategory()
-	{
-		ModelAndView mv = new ModelAndView("home");
-		mv.addObject("isUserClickedManageCategories", true);
-		return mv;
-		
-	}
-	
-	@GetMapping("/addProduct")
-	public ModelAndView  addProduct()
-	{
-		ModelAndView mv = new ModelAndView("home");
-		mv.addObject("isUserClickedAddProduct", true);
-		return mv;
-		
-	}
 
 }

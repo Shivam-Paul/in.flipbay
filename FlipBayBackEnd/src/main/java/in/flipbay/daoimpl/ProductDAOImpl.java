@@ -36,20 +36,10 @@ public ProductDAOImpl(SessionFactory sessionFactory) {
 		return sessionFactory.getCurrentSession();
 	}
 
-	public boolean save(Product product) {
+	public boolean saveOrUpdate(Product product) {
 		try {
 			product.setDescription(product.getName());
-			getSession().save(product);
-			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
-
-	public boolean update(Product product) {
-		try {
-			getSession().update(product);
+			getSession().saveOrUpdate(product);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();

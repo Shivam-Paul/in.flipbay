@@ -38,21 +38,21 @@ public class SupplierDAOTestCase {
 	@Test
 	public void savesupplierTestCase() {
 		
-		supplier.setID("ID01");
+		supplier.setId("ID01");
 		supplier.setName("obj1");
-		boolean status = supplierDAO.save(supplier);
+		boolean status = supplierDAO.saveOrUpdate(supplier);
 		assertEquals("save supplier test case", true, status);
 	}
 	
-	@Test
+	/*@Test
 	public void updatesupplierTestCase() {
 		
-		supplier.setID("ID01");
+		supplier.setId("ID01");
 		supplier.setName("test1");
 		boolean status = supplierDAO.update(supplier);
 		assertEquals("update category test case", true, status);
 		
-	}
+	}*/
 	
 	@Test
 	public void getsupplierSuccessTestCase() {

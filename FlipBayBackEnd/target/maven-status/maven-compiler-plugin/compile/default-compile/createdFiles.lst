@@ -1,0 +1,13 @@
+in\flipbay\dao\UserDAO.class
+in\flipbay\dao\ProductDAO.class
+in\flipbay\dao\CategoryDAO.class
+in\flipbay\domain\Category.class
+in\flipbay\dao\SupplierDAO.class
+in\flipbay\daoimpl\UserDAOImpl.class
+in\flipbay\daoimpl\ProductDAOImpl.class
+in\flipbay\daoimpl\SupplierDAOImpl.class
+in\flipbay\domain\User.class
+in\flipbay\domain\Supplier.class
+in\flipbay\config\ApplicationContextConfig.class
+in\flipbay\domain\Product.class
+in\flipbay\daoimpl\CategoryDAOImpl.class

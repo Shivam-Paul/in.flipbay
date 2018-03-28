@@ -6,10 +6,8 @@ import in.flipbay.domain.Category;
 
 public interface CategoryDAO {
 	
-	public boolean save(Category category);
-	
-	public boolean update(Category category);
-	
+	public boolean saveOrUpdate(Category category);
+		
 	public Category get(String id);
 	
 	public boolean delete(String id);

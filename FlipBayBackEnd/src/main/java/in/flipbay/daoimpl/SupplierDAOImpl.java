@@ -39,9 +39,9 @@ public SupplierDAOImpl(SessionFactory sessionFactory) {
 		return sessionFactory.getCurrentSession();
 	}
 
-	public boolean save(Supplier supplier) {
+	public boolean saveOrUpdate(Supplier supplier) {
 		try {
-			getSession().save(supplier);
+			getSession().saveOrUpdate(supplier);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();

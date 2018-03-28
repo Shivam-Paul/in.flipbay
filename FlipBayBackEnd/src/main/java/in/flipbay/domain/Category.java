@@ -30,10 +30,10 @@ public class Category {
 	public void setProducts(Set<Product> products) {
 		this.products = products;
 	}
-	public String getID() {
+	public String getId() {
 		return id;
 	}
-	public void setID(String id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getName() {
