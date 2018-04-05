@@ -1,6 +1,8 @@
 package in.flipbay.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -14,12 +16,13 @@ import org.springframework.stereotype.Component;
 public class Product {
 	
 	@Id
-	private String id;
+	@GeneratedValue(strategy=GenerationType.AUTO)	
+	private int id;
 	private String name;
 	private String description;
 	private String SupplierID;
 	private String CategoryID;
-	private String price;
+	private Integer price;
 	@ManyToOne
 	@JoinColumn(name = "categoryID", updatable = false, insertable = false, nullable =false)
 	private Category category;
@@ -41,16 +44,17 @@ public class Product {
 	public void setSupplier(Supplier supplier) {
 		this.supplier = supplier;
 	}
-	public String getPrice() {
+	public Integer getPrice() {
 		return price;
 	}
-	public void setPrice(String price) {
+	public void setPrice(Integer price) {
 		this.price = price;
 	}
-	public String getId() {
+	
+	public int getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getName() {

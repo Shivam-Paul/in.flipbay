@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-    
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -9,11 +7,17 @@
 <title>Insert title here</title>
 </head>
 <body>
-${invalidSecurityAnswer}
+<br>
+Image: <img alt="error" src="${imageDirectory}${selectedProduct.id}.png"/><br>
+Image Path: ${selectedProductImage}<br>
 
-<c:if test="${validSecurityAnswer==true}">
-		<jsp:include page="changePassword.jsp"></jsp:include>
-	</c:if>
+
+
+
+Product Name: ${selectedProduct.name}<br>
+Product Price: ${selectedProduct.price}<br>
+Product Description: ${selectedProduct.description}<br>
+<br>
 
 
 </body>

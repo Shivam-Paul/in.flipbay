@@ -14,6 +14,7 @@
 <a href="category">Manage Categories</a>
 <a href="supplier">Manage Suppliers</a>
 <a href="product">Manage Products</a>
+<a href="user">Manage Users</a>
 </c:if>
 </h2>
 
@@ -25,6 +26,9 @@
 	</c:if>
 	<c:if test="${isAdminClickedManageProducts==true}">
 		<jsp:include page="product.jsp"></jsp:include>
+	</c:if>
+	<c:if test="${isAdminClickedManageUsers==true}">
+		<jsp:include page="user.jsp"></jsp:include>
 	</c:if>
 
 

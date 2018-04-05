@@ -11,12 +11,12 @@
 <body>
 	${supplierSaveSuccessMessage}
 	${supplierSaveErrorMessage}
-	<form action="supplier/save" method="post">
+	<form action="supplier/save" method="post" id="addSupplier" enctype="multipart/form-data">
 <table>
 		<tr>
 			<td><b>ID</b></td>
 			<td><input type="text" placeholder="Enter supplier ID"
-				name="supplierID" value="${selectedSupplier.id}" required="true" /></td>
+				name="supplierID" value="${selectedSupplier.id}" readonly required="true" /></td>
 		</tr>
 		<tr>
 			<td><b>Name</b></td>
@@ -28,6 +28,10 @@
 			<td><input type="text" placeholder="Enter supplier Address"
 				name="supplierAddress" value="${selectedSupplier.address}" /></td>
 		</tr>
+		<tr>
+				<td><b>Supplier Image </b></td>
+				<td><input type="file" name="file"></td>
+			</tr>
 		<tr>
 			<td>
 				<button type="submit">Add supplier</button>
@@ -42,6 +46,7 @@
 				<td>Supplier ID</td>
 				<td>Supplier Name</td>
 				<td>Supplier Address</td>
+				
 				<td>Actions</td>
 			</tr>
 
@@ -50,6 +55,7 @@
 					<td>${supplier.id}</td>
 					<td>${supplier.name}</td>
 					<td>${supplier.address}</td>
+					<td><img alt="No Image Uploaded" src="${supplierImagesDirectory}${supplier.id}.png"/></td>
 					<td><a href="supplier/delete/?id=${supplier.id}">Delete</a>/
 					<a href="supplier/edit/?id=${supplier.id}">Edit</a>
 				</tr>

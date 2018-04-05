@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Forgot Password?</title>
 </head>
 <body>
 
@@ -12,7 +12,7 @@
   
 
   <div class="container">
-    <label for="emailID"><b>Username</b></label>
+    <label for="emailID"><b>Enter Your EmailID</b></label>
     <input type="text" placeholder="Enter Your EmailID" name="emailID" required>
 
 <button type="submit">Submit</button></div></form></body>

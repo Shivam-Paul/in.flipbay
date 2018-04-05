@@ -8,9 +8,9 @@ public interface SupplierDAO {
 	
 public boolean saveOrUpdate(Supplier supplier);
 		
-	public Supplier get(String id);
+	public Supplier get(int id);
 	
-	public boolean delete(String id);
+	public boolean delete(int id);
 	
 	public List<Supplier> list();
 

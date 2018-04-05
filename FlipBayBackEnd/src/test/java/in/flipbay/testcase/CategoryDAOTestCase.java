@@ -42,7 +42,6 @@ public class CategoryDAOTestCase {
 	@Test
 	public void saveCategoryTestCase() {
 		
-		category.setId("ID03");
 		category.setName("obj1");
 		boolean status = categoryDAO.saveOrUpdate(category);
 		assertEquals("save category test case", true, status);
@@ -50,10 +49,7 @@ public class CategoryDAOTestCase {
 	
 	@Test
 	public void updateCategoryTestCase() {
-		Category category=categoryDAO.get("ID02");
-		category.setId("ID02");
 		category.setName("test1");
-		category.setDescription(category.getDescription());
 		boolean status = categoryDAO.saveOrUpdate(category);
 		assertEquals("update category test case", true, status);
 		
@@ -62,7 +58,7 @@ public class CategoryDAOTestCase {
 	@Test
 	public void getCategorySuccessTestCase() {
 		
-		category = categoryDAO.get("CAT_002");
+		category = categoryDAO.get(02);
 		
 		assertNotNull("get category test case", category);
 		
@@ -71,7 +67,7 @@ public class CategoryDAOTestCase {
 	@Test
 	public void getCategoryFailureTestCase() {
 		
-		category = categoryDAO.get("Fail");
+		category = categoryDAO.get(10010101);
 		
 		assertNull("get category test case", category);
 		
@@ -80,7 +76,7 @@ public class CategoryDAOTestCase {
 	@Test
 	public void deleteCategorySuccessTestCase()
 	{
-	boolean status =	categoryDAO.delete("ID01");
+	boolean status =	categoryDAO.delete(02);
 	assertEquals("delete category succss test case" , true, status);
 	
 	}
@@ -88,7 +84,7 @@ public class CategoryDAOTestCase {
 	@Test
 	public void deleteCategoryFailureTestCase()
 	{
-	boolean status =	categoryDAO.delete("Fail");
+	boolean status =	categoryDAO.delete(1010101001);
 	assertEquals("delete category failure test case" , false, status);
 	
 	}

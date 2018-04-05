@@ -69,11 +69,11 @@ span.psw {
 }
 </style>
 </head>
-<body>
+<body onload="document.login.uname.focus();">
 
 <h2>Login Form</h2>
 
-<form action="validate" method="post">
+<form action="validate" method="post" name="login">
   
 
   <div class="container">

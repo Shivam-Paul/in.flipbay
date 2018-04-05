@@ -38,28 +38,18 @@ public class ProductDAOTestCase {
 	@Test
 	public void saveproductTestCase() {
 		
-		product.setId("ID01");
 		product.setName("obj1");
+		product.setDescription("test");
 		boolean status = productDAO.saveOrUpdate(product);
 		assertEquals("save product test case", true, status);
 	}
 	
-	/*@Test
-	public void updateproductTestCase() {
-		
-		Product product=productDAO.get("ID01");
-		product.setID("ID01");
-		product.setName("test1");
-		product.setDescription(product.getDescription());
-		boolean status = productDAO.update(product);
-		assertEquals("update category test case", true, status);
-		
-	}*/
+	
 	
 	@Test
 	public void getproductSuccessTestCase() {
 		
-		product = productDAO.get("ID01");
+		product = productDAO.get(02);
 		
 		assertNotNull("get product test case", product);
 		
@@ -68,7 +58,7 @@ public class ProductDAOTestCase {
 	@Test
 	public void getproductFailureTestCase() {
 		
-		product = productDAO.get("Fail");
+		product = productDAO.get(10101010);
 		
 		assertNull("get product test case", product);
 		
@@ -77,7 +67,7 @@ public class ProductDAOTestCase {
 	@Test
 	public void deleteproductSuccessTestCase()
 	{
-	boolean status =	productDAO.delete("ID01");
+	boolean status =	productDAO.delete(02);
 	assertEquals("delete product succss test case" , true, status);
 	
 	}
@@ -85,7 +75,7 @@ public class ProductDAOTestCase {
 	@Test
 	public void deleteproductFailureTestCase()
 	{
-	boolean status =	productDAO.delete("Fail");
+	boolean status =	productDAO.delete(101010100);
 	assertEquals("delete product failure test case" , false, status);
 	
 	}

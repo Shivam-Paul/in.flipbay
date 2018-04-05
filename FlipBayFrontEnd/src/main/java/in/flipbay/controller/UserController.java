@@ -1,6 +1,5 @@
 package in.flipbay.controller;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,11 +13,14 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import in.flipbay.dao.CartDAO;
+import in.flipbay.dao.CategoryDAO;
 import in.flipbay.dao.UserDAO;
+import in.flipbay.domain.Cart;
+import in.flipbay.domain.Category;
 import in.flipbay.domain.User;
 
 //Annotation
@@ -34,11 +36,10 @@ public class UserController {
 	@Autowired
 	private HttpSession httpSession;
 	
+	@Autowired private CategoryDAO categoryDAO;
 	
-	//will send user id and password from jsp to controller
-	//it should validate the credentials
-	//it should return username ---- valid credentials
-	//it should return error message ----invalid credentials
+	@Autowired private CartDAO cartDAO;
+	
 	
 	@PostMapping("validate")
 	public ModelAndView validate(@RequestParam("uname") String username, @RequestParam("psw") String password)
@@ -53,8 +54,10 @@ public class UserController {
 		else
 		{
 			httpSession.setAttribute("welcomeMessage", user.getName());
-			httpSession.setAttribute("loggedUserId", user.getEmailID());
+			httpSession.setAttribute("loggedInUserID", user.getEmailID());
 			httpSession.setAttribute("userLoggedIn", true);
+			List<Cart> myCart = cartDAO.list(user.getEmailID());
+			httpSession.setAttribute("cartSize", myCart.size());
 			
 			if(user.getRole()=='A')
 			{
@@ -76,16 +79,7 @@ public class UserController {
 		return mv;
 	}
 	
-	/*@PutMapping("/user/update")
-	public ModelAndView updateUser(@RequestBody User user) {
-		ModelAndView mv = new ModelAndView("home");
-		if (userDAO.update(user) == true) {
-			mv.addObject("successMessage", "The user updated successfully");
-		} else {
-			mv.addObject("errorMessage", "Could not update the user.");
-		}
-		return mv;
-	}*/
+	
 	
 	//This method is used for user registration
 	@PostMapping("/user/save")
@@ -98,8 +92,6 @@ public class UserController {
 		user.setName(name);
 		user.setPwd(password);
 		user.setMobile(mobile);
-		//user.setRole(role);
-		//user.setRegisteredDate(date);
 		user.setSecurityQuestion(securityQuestion);
 		user.setSecurityAnswer(securityAnswer);
 		
@@ -205,6 +197,11 @@ public class UserController {
 	  public ModelAndView logout() {
 		  
 		  ModelAndView mv = new ModelAndView("home");
+		  mv.addObject("isUserClickedLogout", true);
+		  httpSession.invalidate();
+		  List<Category> allCategories = categoryDAO.list();
+			
+			httpSession.setAttribute("allCategories", allCategories);
 		  
 		  user = null;
 		  
@@ -216,18 +213,42 @@ public class UserController {
 	 public ModelAndView editProfile() {
 		 
 		 ModelAndView mv = new ModelAndView("home");
-		 String userId = (String)httpSession.getAttribute("loggedUserId");
+		 String userId = (String)httpSession.getAttribute("loggedInUserID");
 		 System.out.println(userId);
 		 user = userDAO.get(userId);
-		 System.out.println(user.getRegisteredDate());
 		 httpSession.setAttribute("userDetails", user);
 		 mv.addObject("isUserClickedEditProfile", true);
 		 return mv;
 		 
 	 }
-	  
-	  
-	  
+	 
+	 @GetMapping("/user/edit")
+		public ModelAndView editUser(@RequestParam String emailID) {
+			List<User> allUsers = userDAO.list();
+			httpSession.setAttribute("allUsers", allUsers);
+			ModelAndView mv = new ModelAndView("redirect:/user");
+			mv.addObject("isAdminClickedEditUsers",true);
+			user = userDAO.get(emailID);
+			httpSession.setAttribute("selectedUser", user);
+			return mv;
+		}
+	 
+	 @GetMapping("/user/delete")
+		public ModelAndView deleteCategory(@RequestParam String emailID) {
+			
+			ModelAndView mv = new ModelAndView("redirect:/user");
+			if (userDAO.delete(emailID) == true) {
+				List<User> allUsers = userDAO.list();
+				httpSession.setAttribute("allUsers", allUsers);
+				mv.addObject("successMessage", "The user deleted successfully");
+			} else {
+				mv.addObject("errorMessage", "Could not delete the user.");
+			}
+			return mv;
+		}
+	 
+	
+
 	  
 }
 

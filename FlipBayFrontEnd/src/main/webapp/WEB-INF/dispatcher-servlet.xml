@@ -1,7 +1,59 @@
-<beans xmlns="http://www.springframework.org/schema/beans"
+<beans xmlns = "http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+		xmlns:mvc="http://www.springframework.org/schema/mvc"
+   xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation = "
+   http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+   http://www.springframework.org/schema/context/spring-context.xsd
+   http://www.springframework.org/schema/mvc
+   http://www.springframework.org/schema/mvc/spring-mvc.xsd
+     ">
+	
+	<context:component-scan base-package="in.flipbay"/>
+	
+
+<bean id="viewResolver"
+	class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	
+	<property name="prefix" value="/WEB-INF/views/" />
+	<property name="suffix" value=".jsp" />
+	
+	</bean>
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+
+		 <!-- setting maximum upload size -->
+		<property name="maxUploadSize" value="100000" />
+
+	</bean>
+
+<!-- id must be multipartResolver-->
+<!-- <bean id="multipartResolver"
+class="org.springframework.web.multipart.support.StandardServletMultipartResolver"/>
+ -->
+<!-- LOADING STATIC RESOURCES -->
+	<mvc:annotation-driven />
+	<mvc:resources location="/resources/" mapping="/resources/**" />
+	
+	
+	
+<!-- 	<bean id="viewFactoryCreator"
+	class="org.springframework.webflow.mvc.builder.MvcViewFactoryCreator">
+	<property name="viewResolvers" ref="viewResolver" />
+	</bean> -->
+	
+	</beans>
+
+
+
+
+
+
+<!-- <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:mvc="http://www.springframework.org/schema/mvc" 
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
         http://www.springframework.org/schema/beans     
@@ -12,6 +64,8 @@
         http://www.springframework.org/schema/context/spring-context.xsd">
  
 	<context:component-scan base-package="in.flipbay" />
+	<mvc:resources mapping="/resources/**" location="/resources/"/>
+	<mvc:annotaion-driven/>
  
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
@@ -23,17 +77,18 @@
 	</bean>
 	
 	
-	<beans:bean id="multipartResolver"
+	
+	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 
-		 <!-- setting maximum upload size -->
-		<beans:property name="maxUploadSize" value="100000" />
+		 setting maximum upload size
+		<property name="maxUploadSize" value="100000" />
 
-	</beans:bean>
+	</bean>
 	
-	<!-- <mvc:resources mapping="/resources/**" location="/resources/"/>
-	<mvc:annotaion-driven/> -->
+	
 	
  
 </beans>
 
+ -->

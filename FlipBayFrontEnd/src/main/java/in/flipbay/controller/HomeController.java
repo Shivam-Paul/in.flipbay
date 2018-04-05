@@ -20,6 +20,8 @@ public class HomeController {
 	
 	@Autowired
 	private HttpSession httpSession;
+	
+	private static String baseImageDirectory = "C:\\Training\\FlipBayFrontEnd\\src\\main\\webapp\\resources\\images\\";
 
 	
 	//http://localhost:8080/ShoppingCartFrontEnd/
@@ -30,6 +32,7 @@ public class HomeController {
 		List<Category> allCategories = categoryDAO.list();
 		
 		httpSession.setAttribute("allCategories", allCategories);
+		httpSession.setAttribute("baseImageDirectory", baseImageDirectory);
 		return mv;
 		
 	}

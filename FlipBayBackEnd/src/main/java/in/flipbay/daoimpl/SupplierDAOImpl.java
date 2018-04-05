@@ -49,23 +49,14 @@ public SupplierDAOImpl(SessionFactory sessionFactory) {
 		}		
 	}
 
-	public boolean update(Supplier supplier) {
-		try {
-			getSession().update(supplier);
-			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
 
-	public Supplier get(String id) {
+	public Supplier get(int id) {
 
 		return getSession().get(Supplier.class, id);
 		
 	}
 
-	public boolean delete(String id) {
+	public boolean delete(int id) {
 		try {
 			supplier = get(id);
 			if(supplier==null) {

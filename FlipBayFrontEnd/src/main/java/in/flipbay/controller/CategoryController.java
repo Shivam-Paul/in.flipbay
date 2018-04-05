@@ -8,11 +8,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 
 import in.flipbay.dao.CategoryDAO;
 import in.flipbay.domain.Category;
+import in.flipbay.util.FileUtil;
 
 @Controller
 public class CategoryController {
@@ -26,40 +28,33 @@ public class CategoryController {
 	@Autowired
 	private HttpSession httpSession;
 	
-	//this controller to get all categories
-//	@GetMapping("/category")
-//	public ModelAndView getAllCategories() {
-//		
-//		ModelAndView mv = new ModelAndView();
-//		List<Category> allCategories = categoryDAO.list();
-//		httpSession.setAttribute("allCategories", allCategories);
-//		return mv;
-//	}
+	@Autowired
+	private FileUtil fileUtil;
 	
-	//this controller to get a single category
-	@GetMapping("/category/get/{id}")
-	public ModelAndView getCategory(@RequestParam("id") String id) {
-		
-		ModelAndView mv = new ModelAndView();
-		Category category=categoryDAO.get(id);
-		mv.addObject("category", category);
-		return mv;
-	}
 	
 	//this controller to save a category into database
 	@PostMapping("/category/save")
-	public ModelAndView saveOrUpdateCategory(@RequestParam("categoryID") String categoryID,
-			@RequestParam("categoryName") String categoryName
-			, @RequestParam("categoryDescription") String categoryDescription)  {	
+	public ModelAndView saveOrUpdateCategory(@RequestParam("categoryName") String categoryName
+			, @RequestParam("categoryDescription") String categoryDescription, @RequestParam("file") MultipartFile file)  {	
 		
 		ModelAndView mv = new ModelAndView("redirect:/category");	
-		category.setId(categoryID);
 		category.setName(categoryName);
 		category.setDescription(categoryDescription);
+		
+		int categoryID = category.getId();
+
 		
 		if(categoryDAO.saveOrUpdate(category)) {	
 			List<Category> categories = categoryDAO.list();
 			httpSession.setAttribute("categories", categories);
+			
+			String baseImageDirectory = (String)httpSession.getAttribute("baseImageDirectory");
+			String categoryImagesDirectory = baseImageDirectory + "categories\\";
+			httpSession.setAttribute("categoryImagesDirectory", categoryImagesDirectory);
+			
+			fileUtil.fileCopyNIO(file, categoryID + ".png", categoryImagesDirectory);
+			mv.addObject("uploadSuccessMessage", "File uploaded Successfully");
+			
 			mv.addObject("saveOrUpdateCategorySuccessMessage","The category saved successfully");	
 			mv.addObject("selectedCategory", category);
 		}
@@ -71,25 +66,10 @@ public class CategoryController {
 	}
 	
 	
-	/*@PostMapping(value = "/category/save")
-	public ModelAndView saveOrUpdateUser(@ModelAttribute("categoryForm") Category category,
-			BindingResult result, Model model) {
-		ModelAndView mv = new ModelAndView();
-		if(categoryDAO.save(category) == true) { 	
-			mv.addObject("successMessage","The category saved successfully");	
-		}
-		else {	
-			mv.addObject("failureMessage", "The category failed to save");
-		}
-		return mv;
-		}
-*/
-	
-	
 	
 	//this controller is to update the category details
 	@GetMapping("/category/edit")
-	public ModelAndView editCategory(@RequestParam String id) {
+	public ModelAndView editCategory(@RequestParam int id) {
 		List<Category> categories = categoryDAO.list();
 		httpSession.setAttribute("categories", categories);
 		ModelAndView mv = new ModelAndView("redirect:/category");
@@ -101,7 +81,7 @@ public class CategoryController {
 	
 	//this controller is to delete the category
 	@GetMapping("/category/delete")
-	public ModelAndView deleteCategory(@RequestParam String id) {
+	public ModelAndView deleteCategory(@RequestParam int id) {
 		
 		ModelAndView mv = new ModelAndView("redirect:/category");
 		if (categoryDAO.delete(id) == true) {
@@ -116,21 +96,3 @@ public class CategoryController {
 
 }
 
-/*
-Instead of command name use modelAttribute in the form
-
-<form:form method="POST" action="addStudent" modelAttribute="command">
-Then in the controller use Model as parameter and add new bean object into the model while loading
-
-@RequestMapping(value = "/student", method = RequestMethod.GET)
-   public String student(Model model) {
-
-    model.addAttribute("command",new Student());
-      return "student";
-   }
-Then while submitting the form retrieve the same object to get data from the object
-
- @RequestMapping(value = "/addStudent", method = RequestMethod.POST)
-   public String addStudent(@ModelAttribute("command")Student student, 
-   ModelMap model) {.....}
-*/

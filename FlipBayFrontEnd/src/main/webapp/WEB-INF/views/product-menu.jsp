@@ -63,20 +63,21 @@ li.dropdown {
 </style>
 </head>
 <body>
-
-	<ul>
+<ul>
 		<j:forEach var="category" items="${allCategories}">
 			<li class="dropdown"><a href="javascript:void(0)"
 				class="dropbtn">${category.name}</a>
 				<div class="dropdown-content">
 					<j:forEach var="product" items="${category.products}">
-						<a href="#">${product.name}</a>
+						<a href="product/get/?id=${product.id}">${product.name}</a>
 
 					</j:forEach>
 				</div></li>
 		</j:forEach>
 
 	</ul>
+
+	
 
 
 </body>

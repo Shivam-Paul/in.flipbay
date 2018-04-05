@@ -1,9 +1,12 @@
 C:\Training\FlipBayBackEnd\src\main\java\in\flipbay\dao\CategoryDAO.java
 C:\Training\FlipBayBackEnd\src\main\java\in\flipbay\daoimpl\SupplierDAOImpl.java
 C:\Training\FlipBayBackEnd\src\main\java\in\flipbay\dao\UserDAO.java
+C:\Training\FlipBayBackEnd\src\main\java\in\flipbay\daoimpl\CartDAOImpl.java
 C:\Training\FlipBayBackEnd\src\main\java\in\flipbay\daoimpl\CategoryDAOImpl.java
 C:\Training\FlipBayBackEnd\src\main\java\in\flipbay\dao\SupplierDAO.java
+C:\Training\FlipBayBackEnd\src\main\java\in\flipbay\domain\Cart.java
 C:\Training\FlipBayBackEnd\src\main\java\in\flipbay\daoimpl\ProductDAOImpl.java
+C:\Training\FlipBayBackEnd\src\main\java\in\flipbay\dao\CartDAO.java
 C:\Training\FlipBayBackEnd\src\main\java\in\flipbay\domain\Supplier.java
 C:\Training\FlipBayBackEnd\src\main\java\in\flipbay\config\ApplicationContextConfig.java
 C:\Training\FlipBayBackEnd\src\main\java\in\flipbay\domain\User.java

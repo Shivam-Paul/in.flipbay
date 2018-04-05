@@ -9,33 +9,35 @@
 <title>Category</title>
 </head>
 <body>
-	${categorySaveSuccessMessage} ${categorySaveErrorMessage}
-	<form action="category/save" method="post">
+	<form action="category/save" method="post" id="addCategory" enctype="multipart/form-data">
 		<table>
 		
 			<tr>
-				<td><b>ID</b></td>
+				<td><b>Category ID</b></td>
 				
 			
 				<td><input type="text" placeholder="Enter Category ID"
-					name="categoryID" value="${selectedCategory.id}" required="true" /></td>
+					name="categoryID" value="${selectedCategory.id}" readonly required="true" /></td>
 			</tr>
 			<tr>
-				<td><b>Name</b></td>
+				<td><b>Category Name</b></td>
 				<td><input type="text" placeholder="Enter Category Name"
 					name="categoryName" value="${selectedCategory.name}"
 					required="true" /></td>
 			</tr>
 			<tr>
 
-				<td><b>Description</b></td>
+				<td><b>Category Description</b></td>
 				<td><input type="text" placeholder="Enter Category Description"
 					name="categoryDescription" value="${selectedCategory.description}" /></td>
 			</tr>
 			<tr>
-				<td>
-					<button type="submit">Add Category</button>
-				</td>
+				<td><b>Category Image </b></td>
+				<td><input type="file" name="file"></td>
+			</tr>
+			<tr>
+				<td><input type="submit" value="Create Category">
+					</td>
 			</tr>
 		</table>
 	</form>
@@ -46,6 +48,7 @@
 				<td>Category ID</td>
 				<td>Category Name</td>
 				<td>Category Description</td>
+				<td>Category Image</td>
 				<td>Actions</td>
 			</tr>
 
@@ -54,6 +57,7 @@
 					<td>${category.id}</td>
 					<td>${category.name}</td>
 					<td>${category.description}</td>
+					<td><img alt="No Image Uploaded" src="${categoryImagesDirectory}${category.id}.png"/></td>
 					<td><a href="category/delete/?id=${category.id}">Delete</a>/ <a
 						href="category/edit/?id=${category.id}">Edit</a>
 				</tr>

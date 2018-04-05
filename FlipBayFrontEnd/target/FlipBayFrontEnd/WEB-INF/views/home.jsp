@@ -6,7 +6,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
 <title>Home</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
@@ -80,32 +85,41 @@ span.psw {
 
 </head>
 <body>
-	<c:if test="${isAdmin==true}">
+<%-- 	<c:if test="${isAdmin==true}">
 		<a href="/FlipBayFrontEnd/">Admin Home</a>
 	</c:if>
 	<a href="/FlipBayFrontEnd/">Home</a>
 	<c:if test="${userLoggedIn==true}">
 	<div align="right">
-		Logged in as ${welcomeMessage} <a href="home.jsp"> Logout </a>
+	<a href="editProfile">Edit Profile</a>
+		Logged in as ${welcomeMessage} <a href="logout"> Logout </a><br>
+		MyCart(${cartSize})
+		
 	</div>
 	</c:if>
-	<center>
-		<h2>Welcome to FlipBay</h2>
-	</center>
+ --%>	
 	<c:if test="${userLoggedIn==true}">
-	Welcome: ${welcomeMessage} 
 </c:if>
 	${errorMessage}
-
+	${validSecurityAnswer}
+    ${invalidSecurityAnswer}
+    ${passwordChanged}
 	<br>
-	<c:if test="${userLoggedIn!=true}">
+	 <jsp:include page="loginHeader.jsp"></jsp:include> 
+	<%--  <div style="background-color : #00FF00;color:red;">
+	 <center >
+		<h2>Welcome to FlipBay</h2>
+			Welcome: ${welcomeMessage} 
+		
+	</center>
+	</div> --%>
+	 	<%-- <c:if test="${userLoggedIn!=true}">
 
-		<a href="login"> Existing user</a>
-		<a href="registration"> New User</a>
+		<a href="login"> Login</a>
+		<a href="registration"> Register</a>
 	</c:if>
-
+ --%>
 	<hr color="blue" size="5">
-
 
 	<jsp:include page="product-menu.jsp"></jsp:include>
 
@@ -124,6 +138,21 @@ span.psw {
 	</c:if>
 	<c:if test="${isAdmin==true}">
 		<jsp:include page="admin/adminHome.jsp"></jsp:include>
+	</c:if>
+	<c:if test="${isUserClickedChangePassword==true}">
+		<jsp:include page="changePassword.jsp"></jsp:include>
+	</c:if>
+	<c:if test="${isUserClickedEditProfile==true}">
+		<jsp:include page="editProfile.jsp"></jsp:include>
+	</c:if>
+	<c:if test="${isUserClickedViewAllProducts==true}">
+		<jsp:include page="products.jsp"></jsp:include>
+	</c:if>
+	<c:if test="${isUserSelectedAProduct==true}">
+		<jsp:include page="selectedProduct.jsp"></jsp:include>
+	</c:if>
+	<c:if test="${isUserClickedMyCart==true}">
+		<jsp:include page="cart.jsp"></jsp:include>
 	</c:if>
 
 </body>

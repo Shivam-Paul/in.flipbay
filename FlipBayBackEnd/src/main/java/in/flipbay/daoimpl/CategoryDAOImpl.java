@@ -53,13 +53,13 @@ public CategoryDAOImpl(SessionFactory sessionFactory) {
 			
 	}
 
-	public Category get(String id) {
+	public Category get(int id) {
 
 		return getSession().get(Category.class, id);
 		
 	}
 
-	public boolean delete(String id) {
+	public boolean delete(int id) {
 		try {
 			category = get(id);
 			if(category==null) {

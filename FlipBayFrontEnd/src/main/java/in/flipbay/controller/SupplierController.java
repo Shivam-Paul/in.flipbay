@@ -9,10 +9,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import in.flipbay.dao.SupplierDAO;
 import in.flipbay.domain.Supplier;
+import in.flipbay.util.FileUtil;
 
 @Controller
 public class SupplierController {
@@ -26,47 +28,30 @@ public class SupplierController {
 	@Autowired
 	private HttpSession httpSession;
 	
-	//this controller to get all suppliers
-//	@GetMapping("/supplier/getAll")
-//	public ModelAndView getAllSuppliers() {
-//		
-//		ModelAndView mv = new ModelAndView();
-//		List<Supplier> allSuppliers = supplierDAO.list();
-//		httpSession.setAttribute("allSuppliers", allSuppliers);
-//		return mv;
-//	}
-	
-	//this controller to get a single supplier
-	@GetMapping("/supplier/get/{id}")
-	public ModelAndView getSupplier(@RequestParam("id") String id) {
-		
-		ModelAndView mv = new ModelAndView();
-		Supplier supplier=supplierDAO.get(id);
-		mv.addObject("supplier", supplier);
-		return mv;
-	}
+	@Autowired
+	private FileUtil fileUtil;
+
 	
 	@PostMapping("supplier/save")
-	public ModelAndView savesupplier(@RequestParam("supplierID") String supplierID, @RequestParam("supplierName") String supplierName
-			, @RequestParam("supplierAddress") String supplierAddress)  {
+	public ModelAndView savesupplier(@RequestParam("supplierName") String supplierName
+			, @RequestParam("supplierAddress") String supplierAddress, @RequestParam("file") MultipartFile file)  {
 		ModelAndView mv = new ModelAndView("redirect:/supplier");	
 		
-		supplier.setId(supplierID);
 		supplier.setName(supplierName);
 		supplier.setAddress(supplierAddress);
 		
-		
-//		while(true) {
-//		if(supplierDAO.get("SUP_"+ randomNum.nextInt(100))!=null) {
-//			supplierID = "SUP_"+ randomNum.nextInt(100);
-//			break;
-//		}}
-		
-		//System.out.println(supplierID);
+		int supplierID = supplier.getId();
 
 		if(supplierDAO.saveOrUpdate(supplier)) {	
 			List<Supplier> suppliers = supplierDAO.list();
 			httpSession.setAttribute("suppliers", suppliers);
+			
+			String supplierImagesDirectory = ((String)httpSession.getAttribute("baseImageDirectory"))+"suppliers\\";
+			httpSession.setAttribute("productImagesDirectory", supplierImagesDirectory);
+			
+			fileUtil.fileCopyNIO(file, supplierID + ".png", supplierImagesDirectory);
+			mv.addObject("uploadSuccessMessage", "File uploaded Successfully");
+			
 			mv.addObject("selectedSupplier", supplier);
 			mv.addObject("supplierSaveSuccessMessage","The supplier saved successfully");
 		}
@@ -79,7 +64,7 @@ public class SupplierController {
 	
 	//this controller is to update the supplier details
 	@GetMapping("/supplier/edit")
-	public ModelAndView editSupplier(@RequestParam String id) {
+	public ModelAndView editSupplier(@RequestParam int id) {
 		List<Supplier> suppliers = supplierDAO.list();
 		httpSession.setAttribute("suppliers", suppliers);
 		ModelAndView mv = new ModelAndView("redirect:/supplier");
@@ -91,7 +76,7 @@ public class SupplierController {
 	
 	//this controller is to delete the supplier
 	@GetMapping("/supplier/delete")
-	public ModelAndView deleteSupplier(@RequestParam String id) {
+	public ModelAndView deleteSupplier(@RequestParam int id) {
 		
 		ModelAndView mv = new ModelAndView("redirect:/supplier");
 		if (supplierDAO.delete(id) == true) {

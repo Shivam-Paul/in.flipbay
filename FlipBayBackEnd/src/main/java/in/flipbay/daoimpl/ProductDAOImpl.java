@@ -37,8 +37,9 @@ public ProductDAOImpl(SessionFactory sessionFactory) {
 	}
 
 	public boolean saveOrUpdate(Product product) {
-		try {
+		try {if(product.getDescription()==null) {
 			product.setDescription(product.getName());
+		}
 			getSession().saveOrUpdate(product);
 			return true;
 		} catch (Exception e) {
@@ -47,12 +48,12 @@ public ProductDAOImpl(SessionFactory sessionFactory) {
 		}
 	}
 
-	public Product get(String id) {
+	public Product get(int id) {
 		return getSession().get(Product.class, id);
 
 	}
 
-	public boolean delete(String id) {
+	public boolean delete(int id) {
 		try {
 			product = get(id);
 			if(product==null) {

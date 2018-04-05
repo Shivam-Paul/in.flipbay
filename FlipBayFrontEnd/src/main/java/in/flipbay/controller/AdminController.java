@@ -79,7 +79,8 @@ public class AdminController {
 		ModelAndView mv = new ModelAndView("home");
 		mv.addObject("isAdminClickedManageUsers", true);
 		return mv;
-		
 	}
+	
+
 
 }
