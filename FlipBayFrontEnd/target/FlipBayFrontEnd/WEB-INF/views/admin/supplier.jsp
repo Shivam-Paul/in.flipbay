@@ -6,58 +6,117 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Supplier</title>
+<style>
+td {align: center;}
+</style>
 </head>
 <body>
-	${supplierSaveSuccessMessage}
-	${supplierSaveErrorMessage}
-	<form action="supplier/save" method="post" id="addSupplier" enctype="multipart/form-data">
-<table>
+<div class="container" style="margin-top: 5%;">
+  <table>
+  <tr>
+  <td>
+  		<div align="left" class="form-group">  
+  
+  <form action="supplier/save" method="post" id="addSupplier" enctype="multipart/form-data">
+	
+<table width="100%">
 		<tr>
-			<td><b>ID</b></td>
-			<td><input type="text" placeholder="Enter supplier ID"
-				name="supplierID" value="${selectedSupplier.id}" readonly required="true" /></td>
+			<td><div align="center"><b>ID</b></div></td>
+			<td><div align="center"><input class="form-control" type="text" placeholder="Enter supplier ID"
+				name="supplierID" readonly required="true" /></div></td>
 		</tr>
 		<tr>
-			<td><b>Name</b></td>
-			<td><input type="text" placeholder="Enter supplier Name"
-				name="supplierName" value="${selectedSupplier.name}" required="true" /></td></tr>
+			<td><div align="center"><b>Name</b></div></td>
+			<td><div align="center"><input class="form-control" type="text" placeholder="Enter supplier Name"
+				name="supplierName"  required="true" /></div></td></tr>
 		<tr>
 		
-			<td><b>Address</b></td>
-			<td><input type="text" placeholder="Enter supplier Address"
-				name="supplierAddress" value="${selectedSupplier.address}" /></td>
+			<td><div align="center"><b>Address</b></div></td>
+			<td><div align="center"><input class="form-control" type="text" placeholder="Enter supplier Address"
+				name="supplierAddress"  /></div></td>
 		</tr>
 		<tr>
-				<td><b>Supplier Image </b></td>
-				<td><input type="file" name="file"></td>
+				<td><div align="center"><b>Supplier Image </b></div></td>
+				<td><div align="center"><input class="form-control" type="file" name="file"></div></td>
 			</tr>
 		<tr>
-			<td>
-				<button type="submit">Add supplier</button>
-			</td>
+			<td colspan="2"><div align="center">
+			<button class="btn btn-lg btn-primary" type="submit" role="button">Add Supplier</button>
+			</div></td>
 		</tr>
 		</table>
 	</form>
-	<div>
+	</div>
+  </td>
+  <td>
+  </td>
+  <td>
+  <div align="right" class="form-group">  
+  
+  <form action="supplier/update" method="post" id="addSupplier" enctype="multipart/form-data">
+	<div align="center">
+<table width="100%">
+		<tr>
+			<td><div align="center"><b>ID</b></div></td>
+			<td><div align="center"><input class="form-control" type="text" placeholder="Enter supplier ID"
+				name="supplierID" value="${selectedSupplier.id}" readonly required="true" /></div></td>
+		</tr>
+		<tr>
+			<td><div align="center"><b>Name</b></div></td>
+			<td><div align="center"><input class="form-control" type="text" placeholder="Enter supplier Name"
+				name="supplierName" value="${selectedSupplier.name}" required="true" /></div></td></tr>
+		<tr>
+		
+			<td><div align="center"><b>Address</b></div></td>
+			<td><div align="center"><input class="form-control" type="text" placeholder="Enter supplier Address"
+				name="supplierAddress" value="${selectedSupplier.address}" /></div></td>
+		</tr>
+		<tr>
+				<td><div align="center"><b>Suppliers Image </b></div></td>
+				<td><div align="center"><input class="form-control" type="file" name="file"></div></td>
+			</tr>
+		<tr>
+			<td colspan="2">
+			<div align="center">
+			
+			<button class="btn btn-lg btn-primary" type="submit" role="button">Update Supplier</button>
+			</div></td>
+		</tr>
+		</table>
+		</div>
+	</form>
+	</div>
+  </td>
+  </tr>
+  </table>
 
-		<table border="3" bgcolor="lightblue">
+	</div>
+	
+<div align="center">
+		<table width="80%" border="3" bgcolor="lightblue">
 			<tr>
-				<td>Supplier ID</td>
-				<td>Supplier Name</td>
-				<td>Supplier Address</td>
-				
-				<td>Actions</td>
+				<td><div align="center"><b>ID</b></div></td>
+				<td><div align="center"><b>Name</b></div></td>
+				<td><div align="center"><b>Address</b></div></td>
+				<td><div align="center"><b>Image</b></div></td>
+				<td><div align="center"><b>Actions</b></div></td>
 			</tr>
 
 			<c:forEach var="supplier" items="${allSuppliers}">
 				<tr>
-					<td>${supplier.id}</td>
-					<td>${supplier.name}</td>
-					<td>${supplier.address}</td>
-					<td><img alt="No Image Uploaded" src="${supplierImagesDirectory}${supplier.id}.png"/></td>
-					<td><a href="supplier/delete/?id=${supplier.id}">Delete</a>/
-					<a href="supplier/edit/?id=${supplier.id}">Edit</a>
+					<td><div align="center"><b>${supplier.id}</b></div></td>
+					<td><div align="center">${supplier.name}</div></td>
+					<td><div align="center">${supplier.address}</div></td>
+					<td><div align="center"><img height="100px" width="100px" alt="No Image Uploaded" 
+					src="resources/images/suppliers/${supplier.name}.png"/></div></td>
+					<td><div align="center">
+					<a class="btn btn-lg btn-primary" href="supplier/delete/?id=${supplier.id}" role="button">
+					<span class="glyphicon glyphicon-trash "></span></a>
+					&nbsp;
+					<a class="btn btn-lg btn-primary" href="supplier/edit/?id=${supplier.id}" role="button">
+					<span class="glyphicon glyphicon-pencil "></span></a>
+					</div></td>
 				</tr>
 			</c:forEach>
 		</table>

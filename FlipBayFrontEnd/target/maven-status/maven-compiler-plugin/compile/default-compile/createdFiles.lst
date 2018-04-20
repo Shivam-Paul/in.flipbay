@@ -5,4 +5,5 @@ in\flipbay\controller\CategoryController.class
 in\flipbay\controller\HomeController.class
 in\flipbay\controller\UserController.class
 in\flipbay\util\FileUtil.class
+in\flipbay\service\CartService.class
 in\flipbay\controller\CartController.class

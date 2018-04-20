@@ -12,7 +12,9 @@
      ">
 	
 	<context:component-scan base-package="in.flipbay"/>
-	
+	<!-- LOADING STATIC RESOURCES -->
+	<mvc:annotation-driven />
+	<mvc:resources location="/resources/" mapping="/resources/**" />
 
 <bean id="viewResolver"
 	class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -33,9 +35,7 @@
 <!-- <bean id="multipartResolver"
 class="org.springframework.web.multipart.support.StandardServletMultipartResolver"/>
  -->
-<!-- LOADING STATIC RESOURCES -->
-	<mvc:annotation-driven />
-	<mvc:resources location="/resources/" mapping="/resources/**" />
+
 	
 	
 	

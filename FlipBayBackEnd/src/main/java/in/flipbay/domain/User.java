@@ -1,10 +1,13 @@
 package in.flipbay.domain;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.stereotype.Component;
@@ -25,6 +28,11 @@ public class User {
 	private Date registeredDate;
 	private String securityQuestion;
 	private String securityAnswer;
+	
+	@OneToMany(mappedBy="user", fetch = FetchType.EAGER)
+	private Set<User> user;
+	
+	
 	public String getSecurityQuestion() {
 		return securityQuestion;
 	}
@@ -73,5 +81,12 @@ public class User {
 	public void setRegisteredDate(Date date) {
 		this.registeredDate = date;
 	}
+	public Set<User> getUser() {
+		return user;
+	}
+	public void setUser(Set<User> user) {
+		this.user = user;
+	}
+	
 	
 }

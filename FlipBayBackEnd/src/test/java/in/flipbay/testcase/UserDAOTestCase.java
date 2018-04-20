@@ -51,7 +51,7 @@ public class UserDAOTestCase {
 		user.setMobile("1234512345");
 		user.setSecurityQuestion("Your favorite movie");
 		user.setSecurityAnswer("test");
-		boolean status = userDAO.saveOrUpdate(user);
+		boolean status = userDAO.save(user);
 		assertEquals("save user test case", true, status);
 	}
 	

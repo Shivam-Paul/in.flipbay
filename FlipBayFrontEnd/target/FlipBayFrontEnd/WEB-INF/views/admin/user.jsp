@@ -9,66 +9,80 @@
 <title>Manage Users</title>
 </head>
 <body>
+<div class="container" style="margin-top: 5%;">
+  <div class="row">
+    <div class="col-sm-4"> </div>
+<div class="col-md-4">
 <form action="user/save" method="post">
   
 
-  <div class="container">
+	<div class="form-group">  
     <label for="emailID"><b>Email ID</b></label>
-    <input type="text" name="emailID" readonly value="${selectedUser.emailID}">
-     <label for="Name"><b>Name</b></label>
-    <input type="text" placeholder="Enter Name" value="${selectedUser.name}" name="name" required>
+    <input class="form-control" type="text" name="emailID" readonly value="${selectedUser.emailID}">
+    
+    <label for="Name"><b>Name</b></label>
+    <input class="form-control" type="text" placeholder="Enter Name" value="${selectedUser.name}" name="name" required>
     
     <label for="Password"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" value="${selectedUser.pwd}" name="password" required>
-    
+    <input class="form-control" type="password" placeholder="Enter Password" value="${selectedUser.pwd}" name="password" required>
    
     <label for="Mobile"><b>Mobile</b></label>
-    <input type="text" maxlength="10" placeholder="Enter Mobile" value="${selectedUser.mobile}" name="mobile">
+    <input class="form-control" type="text" maxlength="10" placeholder="Enter Mobile" value="${selectedUser.mobile}" name="mobile">
+    
     <label for="Role"><b>Role</b></label>
-    <input type="text" readonly value="${selectedUser.role}" name="role" required>
+    <input class="form-control" type="text" readonly value="${selectedUser.role}" name="role" required>
     
     <label for="RegisteredDate"><b>Date of Registration</b></label>
-    <input type="text"  readonly value="${selectedUser.registeredDate}"  name="registeredDate" >
+    <input class="form-control" type="text"  readonly value="${selectedUser.registeredDate}"  name="registeredDate" >
+    
     <label for="SecurityQuestion"><b>Security Question</b></label><br>
-   	<select name="securityQuestion">
-   	<option selected="selected" value="${selectedUser.securityQuestion}">${selectedUser.securityQuestion}</option>
-   	</select><br><br>
+   	<input class="form-control" type="text" value="${selectedUser.securityQuestion}" name="securityQuestion" readonly />
    	
     <label for="SecurityAnswer"><b>Security Answer</b></label>
-    <input type="text" readonly placeholder="Security Answer" value="${selectedUser.securityAnswer}" name="securityAnswer" required>
-
-	<button type="submit">Submit</button></div>
+    <input class="form-control" type="text" readonly placeholder="Security Answer" value="${selectedUser.securityAnswer}"
+     name="securityAnswer" required>
+<div align="center">
+<button class="btn btn-lg btn-primary" type="submit" role="button">Update User</button>
+</div>
+	</div>
 </form>
+</div>
+</div>
+</div>
 	<div>
-
-		<table border="3" bgcolor="lightblue">
+<div align="center">
+		<table width="80%" border="3" bgcolor="lightblue">
 			<tr>
-				<td>User EmailID</td>
-				<td>Username</td>
-				<td>User Password</td>
-								<td>User Mobile</td>
-				
-							<td>User Role</td>
-							<td>User RegisteredDate</td>
-							<td>User Security Question</td>
-							<td>User Security Answer</td>
-			
-				<td>Actions</td>
+				<td><div align="center"><b>EmailID</b></div></td>
+				<td><div align="center"><b>Name</b></div></td>
+				<td><div align="center"><b>Password</b></div></td>
+				<td><div align="center"><b>Mobile</b></div></td>
+				<td><div align="center"><b>Role</b></div></td>
+				<td><div align="center"><b>RegisteredDate</b></div></td>
+				<td><div align="center"><b>Security Question</b></div></td>
+				<td><div align="center"><b>Security Answer</b></div></td>
+				<td><div align="center"><b>Actions</b></div></td>
 			</tr>
 
 			<c:forEach var="user" items="${allUsers}">
 				<tr>
-					<td>${user.emailID}</td>
-					<td>${user.name}</td>
-					<td>${user.pwd}</td>
-										<td>${user.mobile}</td>
-					
-					<td>${user.role}</td>
-					<td>${user.registeredDate}</td>
-					<td>${user.securityQuestion}</td>
-					<td>${user.securityAnswer}</td>
-					<td><a href="user/delete/?emailID=${user.emailID}">Delete</a>/ <a
-						href="user/edit/?emailID=${user.emailID}">Edit</a>
+					<td><div align="center"><b>${user.emailID}</b></div></td>
+					<td><div align="center">${user.name}</div></td>
+					<td><div align="center">${user.pwd}</div></td>
+					<td><div align="center">${user.mobile}</div></td>
+					<td><div align="center">${user.role}</div></td>
+					<td><div align="center">${user.registeredDate}</div></td>
+					<td><div align="center">${user.securityQuestion}</div></td>
+					<td><div align="center">${user.securityAnswer}</div></td>
+					<td><div align="center">
+					<a class="btn btn-lg btn-primary" href="user/delete/?emailID=${user.emailID}" role="button">
+					<span class="glyphicon glyphicon-trash "></span>
+					</a>
+					&nbsp;
+					 <a class="btn btn-lg btn-primary" href="user/edit/?emailID=${user.emailID}" role="button">
+					 <span class="glyphicon glyphicon-pencil "></span>
+					 </a>
+						</div></td>
 				</tr>
 			</c:forEach>
 		</table>

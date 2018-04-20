@@ -10,20 +10,69 @@
 </head>
 <body>
 
+<div class="container" style="margin-top: 5%;">
+  <div class="row">
+    <div class="col-sm-4"> </div>
+<div class="col-md-4">
 
 
-
-<form action="changePassword" method="post">
+<form action="user/changePassword" method="post">
   
 
-  <div class="container">
+<div class="form-group">  
     <label for="NewPassword"><b>Enter New Password</b></label>
-    <input type="text" placeholder="Enter Your New Password" name="NewPassword" required>
+    <input id="NewPassword" type="password" class="form-control" placeholder="Enter Your New Password" name="NewPassword" onkeyup="return passwordStrength1();" required>
+    <span id="strength">Type Password</span>
+					
+					<script language="javascript">
+function passwordStrength1() {
+var strength = document.getElementById('strength');
+var strongRegex = new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");
+var mediumRegex = new RegExp("^(?=.{7,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$", "g");
+var enoughRegex = new RegExp("(?=.{6,}).*", "g");
+var pwd = document.getElementById("NewPassword");
+if (pwd.value.length==0) {
+strength.innerHTML = 'Type Password';
+} else if (false == enoughRegex.test(pwd.value)) {
+strength.innerHTML = 'More Characters';
+} else if (strongRegex.test(pwd.value)) {
+strength.innerHTML = '<span style="color:green">Strong!</span>';
+} else if (mediumRegex.test(pwd.value)) {
+strength.innerHTML = '<span style="color:orange">Medium!</span>';
+} else {
+strength.innerHTML = '<span style="color:red">Weak!</span>';
+}
+}
+</script>
+    </div>
+    <div class="form-group">  
+    
     <label for="ConfirmNewPassword"><b>Confirm New Password</b></label>
-    <input type="text" placeholder="Confirm New Password" name="ConfirmNewPassword" required>
+    <input id="ConfirmNewPassword" type="password" class="form-control" placeholder="Confirm New Password" name="ConfirmNewPassword" onkeyup="return validatePasswordMatch1();" required>
+    <span id="strengthID1">Type Confirm Password</span>
+					<script>
+						var password = document.getElementById('NewPassword');
+						var confirmPassword = document
+								.getElementById('ConfirmNewPassword');
+						function validatePasswordMatch1() {
+							var strength = document.getElementById('strengthID1');
 
-<button type="submit">Submit</button></div>
+							var passValue = password.value;
+							var conPassValue = confirmPassword.value;
+							if (passValue != conPassValue) {
+								strength.innerHTML = '<span style="color:red">Not Match!</span>';
+								/* alert('password mismatch!') */
+							} else {
+								strength.innerHTML = '<span style="color:green">Password Matched!</span>';
+
+							}
+						}
+					</script>
+</div>
+<button class="btn btn-default" type="submit">Submit</button>
 </form>
-
+</div>
+</div>
+</div>
 </body>
 </html>

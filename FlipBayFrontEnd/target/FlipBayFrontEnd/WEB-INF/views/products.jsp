@@ -9,26 +9,57 @@
 <title>Insert title here</title>
 </head>
 <body>
-<div>
-
-		<table border="3" bgcolor="lightblue">
+<br>
+<br>
+<br>
+<div align="center">
+		<table width="1000" border="3" bgcolor="lightblue">
 			<tr>
 				
-				<td>Product Name</td>
-				<td>Product Description</td>
-				<td>Product Price</td>
-				<td>Actions</td>
+				<td><div align="center">Product Name</div></td>
+				<td><div align="center">Category Name</div></td>
+				<td><div align="center">Supplier Name</div></td>
+				<td><div align="center">Product Description</div></td>
+				<td><div align="center">Quantity Available</div></td>
+				
+				<td><div align="center">Product Price</div></td>
+				<td colspan="2"><div align="center">View</div></td>
+				<%-- <c:if test="${userLoggedIn==true}">
+				<td><div align="center">Add To Cart</div></td>
+				</c:if> --%>
 			</tr>
 
 			<c:forEach var="product" items="${products}">
 				<tr>
 			
-					<td>${product.name}</td>
-					<td>${product.description}</td>
-					<td>${product.price}</td>
+					<td><div align="center">${product.name}</div></td>
+					<td><div align="center">${product.category.name}</div>
+					<td><div align="center">${product.supplier.name}</div>
+					<td><div align="center">${product.description}</div></td>
+					<td><div align="center">${product.quantity}</div></td>
+					
+					<td><div align="center">${product.price}</div></td>
 
-					<td><a href="product/get/?id=${product.id}">View</a>/ <a
-						href="product/cart/add/?productID=${product.id}">Add To Cart</a>
+					<td><div align="center">
+					<a class="btn btn-lg btn-primary" role="button" href="product/get/?id=${product.id}">
+					<span class="glyphicon glyphicon-eye-open ">
+					</span></a>
+					</div>
+					</td>
+					<td>
+					
+					<div align="center">
+					<c:if test="${userLoggedIn==true}">
+					<form action="cart/add/product" method="post">
+					
+					<input type="hidden" value="1" name="quantity"  required/>
+					<input type="hidden" name="productID" value="${product.id}"/>
+					<button type="submit"><span class="glyphicon glyphicon-shopping-cart "></span></button>
+					
+					</form>
+					</c:if>
+					</div>
+					</td>
 				</tr>
 			</c:forEach>
 		</table>

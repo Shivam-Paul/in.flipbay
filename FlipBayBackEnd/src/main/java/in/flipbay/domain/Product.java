@@ -1,8 +1,8 @@
 package in.flipbay.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -13,22 +13,35 @@ import org.springframework.stereotype.Component;
 @Component
 @Entity
 @Table(name="product")
-public class Product {
+public class Product implements Serializable{
+	private static final long serialVersionUID = 1L;
+
 	
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)	
+	@Id	
 	private int id;
 	private String name;
 	private String description;
 	private String SupplierID;
 	private String CategoryID;
 	private Integer price;
+	private int quantity;
+	
+	
+	
+	public int getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
 	@ManyToOne
-	@JoinColumn(name = "categoryID", updatable = false, insertable = false, nullable =false)
+	@JoinColumn(name = "categoryID", updatable = false, insertable = false, nullable = false)
 	private Category category;
+	
 	@ManyToOne
-	@JoinColumn(name="supplierID", updatable = false, insertable = false, nullable = false)
+	@JoinColumn(name = "supplierID", updatable = false, insertable = false, nullable = false)
 	private Supplier supplier;
+	
 	
 	
 	
@@ -81,5 +94,6 @@ public class Product {
 	public void setCategoryID(String categoryID) {
 		CategoryID = categoryID;
 	}
+	
 
 }

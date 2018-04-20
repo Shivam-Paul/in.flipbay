@@ -7,95 +7,220 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import in.flipbay.dao.CartDAO;
+import in.flipbay.dao.AddressDAO;
+import in.flipbay.dao.CartItemDAO;
 import in.flipbay.dao.ProductDAO;
+import in.flipbay.domain.Address;
 import in.flipbay.domain.Cart;
+import in.flipbay.domain.CartItem;
 import in.flipbay.domain.Product;
-import in.flipbay.domain.User;
+import in.flipbay.service.CartService;
 
 @Controller
+@RequestMapping("/cart")
 public class CartController {
 	
-	@Autowired private CartDAO cartDAO;
 	
-	@Autowired private Cart cart;
+	@Autowired
+	private CartService cartService;
 	
-	@Autowired private HttpSession httpSession;
+	@Autowired CartItemDAO cartItemDAO;
 	
-	@Autowired private Product product;
+	@Autowired CartItem cartItem;
 	
-	@Autowired private ProductDAO productDAO;
+	@Autowired HttpSession httpSession;
 	
-	@Autowired private User user;
+	@Autowired Cart cart;
 	
-	double grandTotal=0.0;
+	@Autowired Product product;
 	
-	@GetMapping("product/cart/add")
-	public ModelAndView addToCart(@RequestParam int productID) {
+	@Autowired ProductDAO productDAO;
+	
+	@Autowired Address address;
+	
+	@Autowired AddressDAO addressDAO;
+	
+	
+	
+	@GetMapping("/cart")
+	public ModelAndView myCart() {
 		
 		ModelAndView mv = new ModelAndView("home");
-		
-		
-		String loggedInUserID = (String)httpSession.getAttribute("loggedInUserID");
-		
-		if(loggedInUserID==null) {
-			
-			mv.addObject("errorMessage", "Please login to add any product to cart");
-			
-		}
-		
-		product = productDAO.get(productID);
-		cart.setEmailID(loggedInUserID);
-		cart.setPrice(product.getPrice());
-		cart.setProductName(product.getName());
-		cart.setProductID(product.getId());
-		cart.setQuantity(1);
-		
-		if(cartDAO.saveOrUpdate(cart)) {
-			mv.addObject("cartSaveSuccessMessage", "The product added to cart successfully");
-			List<Cart> myCart = cartDAO.list(user.getEmailID());
-			httpSession.setAttribute("cartSize", myCart.size());
-		}
-		else {
-			mv.addObject("cartSaveErrorMessage", "Could not add product to the cart");
-		}
-		return mv;
-		
-	}
-	
-	
-	@GetMapping("cart")
-	public ModelAndView getCartDetails() {
-		
-		ModelAndView mv = new ModelAndView("home");
-		
-		String loggedInUserID = (String) httpSession.getAttribute("loggedInUserID");
-		
-		if(loggedInUserID==null) {
-			
-			mv.addObject("errorMessage", "Please login to see your cart details.");
-			return mv;
-			
-		}
-		
-		List<Cart> userCart = cartDAO.list(loggedInUserID);
-		for(Cart cart:userCart) {
-			double	subTotal=0.0;
-		subTotal=(cart.getPrice())*(cart.getQuantity());
-			System.out.println(subTotal);
-		grandTotal=grandTotal+subTotal;
-		System.out.println(grandTotal);
-			
-		}
-		mv.addObject("userCart", userCart);
-		httpSession.setAttribute("grandTotal", grandTotal);
-		grandTotal=0.0;
 		mv.addObject("isUserClickedMyCart", true);
+		
+		cart = cartItemDAO.getCart((String)httpSession.getAttribute("loggedInUserID"));
+		
+		List<CartItem> myCart = cartItemDAO.list(cart.getId());
+		httpSession.setAttribute("myCart", myCart);
+		httpSession.setAttribute("cartSize", myCart.size());
+		mv.addObject("grandTotal", cart.getGrandTotal());
+
+		
 		return mv;
 		
 	}
+	
+	@RequestMapping("/billing")
+	public ModelAndView billing() {
+		
+		ModelAndView mv = new ModelAndView("home");
+		
+		mv.addObject("isUserFilledShippingAddress", true);
+		
+		return mv;
+		
+	}
+	
+	@PostMapping("/add/product")
+	public String addCartItem(@RequestParam("productID") int productID, @RequestParam("quantity") int quantity) {
+		
+	cartService.addCartItem(productID, quantity);	
+	List<CartItem> myCart = cartItemDAO.list(cart.getId());
+	httpSession.setAttribute("cartSize", myCart.size());
+	return "redirect:/viewAllProducts";	
+	
+	}
+	
+	@GetMapping("/delete/{cartItemID}")
+	public String deleteCartItem(@PathVariable int cartItemID) {
+		
+		cartService.deleteCartItem(cartItemID);
+		List<CartItem> myCart = cartItemDAO.list(cart.getId());
+		httpSession.setAttribute("cartSize", myCart.size());
+		return "redirect:/cart/cart";
+		
+	}
+	
+	@RequestMapping("/update/{cartItemID}")
+	public String udpateCartLine(@PathVariable int cartItemID, @RequestParam int count) {
+		
+	cartService.updateCartItem(cartItemID, count);
+	List<CartItem> myCart = cartItemDAO.list(cart.getId());
+	httpSession.setAttribute("cartSize", myCart.size());
+	
+	return "redirect:/cart/cart";	
+	}
+	
+	@RequestMapping("/deleteWholeCart")
+	public String deleteWholeCart() {
+		
+		String emailID = (String)httpSession.getAttribute("loggedInUserID");
+		cart = cartItemDAO.getCart(emailID);
+		List<CartItem> allItems = cartItemDAO.list(cart.getId());
+		for(CartItem items : allItems) {
+			
+			deleteCartItem(items.getCartItemID());
+			
+		}
+		cart.setCartItem(0);
+		cart.setEmailID(emailID);
+		cart.setGrandTotal(0.0);
+		cart.setId(cart.getId());
+		
+		cartItemDAO.update(cart);
+		List<CartItem> myCart = cartItemDAO.list(cart.getId());
+		httpSession.setAttribute("cartSize", myCart.size());
+		
+		return "redirect:/viewAllProducts";
+		
+	}
+	
+	@RequestMapping("/checkout")
+	public String checkout() {
+		
+		String emailID = (String)httpSession.getAttribute("loggedInUserID");
+		cart = cartItemDAO.getCart(emailID);
+		List<CartItem> allItems = cartItemDAO.list(cart.getId());
+		for(CartItem items : allItems) {
+			
+			product = productDAO.get(items.getProductID());
+			
+			product.setQuantity(product.getQuantity()-items.getQuantity());
+			product.setDescription(product.getDescription());
+			product.setId(product.getId());
+			product.setCategoryID(product.getCategoryID());
+			product.setSupplierID(product.getSupplierID());
+			product.setPrice(product.getPrice());
+			product.setName(product.getName());
+			productDAO.update(product);
+			
+			deleteCartItem(items.getCartItemID());
+			
+		}
+		
+		httpSession.setAttribute("grandTotal", cart.getGrandTotal());
+
+		cart.setCartItem(0);
+		cart.setEmailID(emailID);
+		cart.setGrandTotal(0.0);
+		cart.setId(cart.getId());
+		
+		cartItemDAO.update(cart);
+		List<CartItem> myCart = cartItemDAO.list(cart.getId());
+		httpSession.setAttribute("cartSize", myCart.size());
+		
+		return "redirect:/cart/billing";
+		
+	}
+	
+	@GetMapping("/fillShippingAddress")
+	public ModelAndView fillShippingAddress() {
+		
+		ModelAndView mv = new ModelAndView("home");
+		
+		mv.addObject("isUserClickedCheckout", true);
+		
+		return mv;
+		
+	}
+	
+	@PostMapping("/shippingAddress")
+	public ModelAndView addAddress(@RequestParam("houseNumber") int hn, @RequestParam("street") String st,
+			@RequestParam("city") String ci
+			,@RequestParam("state") String sta, @RequestParam("country") String co, @RequestParam("pincode") int pi) {
+		
+		
+		ModelAndView mv = new ModelAndView("redirect:/cart/fillShippingAddress");	
+
+		
+		/*httpSession.setAttribute("hn", hn);
+		httpSession.setAttribute("st", st);
+		httpSession.setAttribute("ci", ci);
+		httpSession.setAttribute("sta", sta);
+		httpSession.setAttribute("co", co);
+		httpSession.setAttribute("pi", pi);*/
+
+		/*System.out.println(city);
+		System.out.println(state);
+		System.out.println(country);
+		System.out.println(pincode);
+		System.out.println(street);
+		System.out.println(houseNumber);
+		System.out.println(httpSession.getAttribute("loggedInUserID"));*/
+
+	
+		address.setStreet(st);
+		address.setCity(ci);
+		address.setCountry(co);
+		address.setEmailID((String)httpSession.getAttribute("loggedInUserID"));
+		address.setPincode(pi);
+		address.setState(sta);
+		address.setHouseNumber(hn);
+
+		addressDAO.save(address);
+
+	
+		httpSession.setAttribute("shippingAddress", address);
+				
+		return mv;
+		
+	}
+	
 
 }

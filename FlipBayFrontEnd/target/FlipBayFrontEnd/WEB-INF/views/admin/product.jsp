@@ -9,87 +9,195 @@
 <title>Product</title>
 </head>
 <body>
-	<form action="product/save" method="post" id="addProduct" enctype="multipart/form-data">
-		<table>
+<div align="center" class="container" style="margin-top: 5%;">
 
-			<tr>
-				<td><b>Product ID</b></td>
+ <table>
+ <tr>
+ <td>
+ <div class="form-group">  
+			<form action="product/save" method="post" id="addProduct" enctype="multipart/form-data">
+		
+	
+		<table width="100%">
+		<tr>
+		<th colspan="2"><div align="center">Add Product</div></th>
+		</tr>
 
-
-				<td><input type="text" placeholder="Enter Product ID"
-					name="productID" value="${selectedProduct.id}" readonly required="true" /></td>
+			 <tr>
+				<td><div align="center"><b>Product ID</b></div></td>
+				<td><div align="center"><input class="form-control" type="text" placeholder="Enter Product ID"
+					  name="productID" required="true" /></div></td>
 			</tr>
 			<tr>
-				<td><b>Product Name</b></td>
-				<td><input type="text" placeholder="Enter Product Name"
-					name="productName" value="${selectedProduct.name}" required="true" /></td>
+				<td><div align="center"><b>Product Name</b></div></td>
+				<td><div align="center"><input class="form-control" type="text" placeholder="Enter Product Name"
+					name="productName"  required="true" /></div></td>
 			</tr>
 			<tr>
 
-				<td><b>Product Description</b></td>
-				<td><input type="text" placeholder="Enter Product Description"
-					name="productDescription" value="${selectedProduct.description}" /></td>
+				<td><div align="center"><b>Product Description</b></div></td>
+				<td><div align="center"><input class="form-control" type="text" placeholder="Enter Product Description"
+					name="productDescription"  /></div></td>
 			</tr>
 
 			<tr>
 
-				<td><b>Category ID</b></td>
-				<td><select name="categoryID">
+				<td><div align="center"><b>Category ID</b></div></td>
+				<td><div align="center"><select name="categoryID">
 						<c:forEach var="category" items="${allCategories}">
 							<option value="${category.id}">${category.name}</option>
 						</c:forEach>
-				</select></td>
+				</select></div></td>
 			</tr>
 			<tr>
 
-				<td><b>Supplier ID</b></td>
-				<td><select name="supplierID">
+				<td><div align="center"><b>Supplier ID</b></div></td>
+				<td><div align="center"><select name="supplierID">
 						<c:forEach var="supplier" items="${allSuppliers}">
 							<option value="${supplier.id}">${supplier.name}</option>
 						</c:forEach>
-				</select></td>
+				</select></div></td>
 			</tr>
 			<tr>
-				<td><b>Product Price</b></td>
-				<td><input type="text" placeholder="Enter Product Price"
+				<td><div align="center"><b>Product Price</b></div></td>
+				<td><div align="center"><input class="form-control" type="text" placeholder="Enter Product Price"
+					name="productPrice"
+					required="true" /></div></td>
+			</tr>
+			<tr>
+				<td><div align="center"><b>Product Quantity</b></div></td>
+				<td><div align="center"><input class="form-control" type="text" placeholder="Enter Product Quantity"
+					name="productQuantity" 
+					required="true" /></div></td>
+			</tr>
+			<tr>
+				<td><div align="center"><b>Product Image </b></div></td>
+				<td><div align="center"><input class="form-control" type="file" name="file"></div></td>
+			</tr>
+			<tr>
+				<td colspan="2"><div align="center">
+				<button class="btn btn-lg btn-primary" type="submit" role="button">Add Product</button>
+				
+					</div></td>
+			</tr>
+		</table>
+	</form>
+	</div>
+ </td>
+ 
+ 
+ <td>
+ 
+ <div align="right" class="form-group">  
+			<form action="product/update" method="post" id="updateProduct" enctype="multipart/form-data">
+		
+	
+		<table width="100%">
+		<tr>
+ 		<th colspan="2"><div align="center">Update Product</div></th>
+ 		<th></th>
+		</tr>
+			<tr>
+				<td><div align="center"><b>Product ID</b></div></td>
+
+
+				<td><div align="center"><input class="form-control" type="text" placeholder="Enter Product ID"
+					name="productID" value="${selectedProduct.id}" readonly required="true" /></div></td>
+			</tr>
+			<tr>
+				<td><div align="center"><b>Product Name</b></div></td>
+				<td><div align="center"><input class="form-control" type="text" placeholder="Enter Product Name"
+					name="productName" value="${selectedProduct.name}" required="true" /></div></td>
+			</tr>
+			<tr>
+
+				<td><div align="center"><b>Product Description</b></div></td>
+				<td><div align="center"><input class="form-control" type="text" placeholder="Enter Product Description"
+					name="productDescription" value="${selectedProduct.description}" /></div></td>
+			</tr>
+
+			<tr>
+
+				<td><div align="center"><b>Category ID</b></div></td>
+				<td><div align="center"><select name="categoryID">
+						<c:forEach var="category" items="${allCategories}">
+							<option value="${category.id}">${category.name}</option>
+						</c:forEach>
+				</select></div></td>
+			</tr>
+			<tr>
+
+				<td><div align="center"><b>Supplier ID</b></div></td>
+				<td><div align="center"><select name="supplierID">
+						<c:forEach var="supplier" items="${allSuppliers}">
+							<option value="${supplier.id}">${supplier.name}</option>
+						</c:forEach>
+				</select></div></td>
+			</tr>
+			<tr>
+				<td><div align="center"><b>Product Price</b></div></td>
+				<td><div align="center"><input class="form-control" type="text" placeholder="Enter Product Price"
 					name="productPrice" value="${selectedProduct.price}"
-					required="true" /></td>
+					required="true" /></div></td>
 			</tr>
 			<tr>
-				<td><b>Product Image </b></td>
-				<td><input type="file" name="file"></td>
+				<td><b>Product Quantity</b></div></td>
+				<td><input class="form-control" type="text" placeholder="Enter Product Quantity"
+					name="productQuantity" value="${selectedProduct.quantity}"
+					required="true" /></div></td>
 			</tr>
 			<tr>
-				<td><input type="submit" value="Create Product">
+				<td><div align="center"><b>Product Image </b></div></td>
+				<td><div align="center"><input class="form-control" type="file" name="file"></div></td>
+			</tr>
+			<tr>
+				<td colspan="2">
+				<div align="center">
+				<button class="btn btn-lg btn-primary" type="submit" role="button">Update Product</button>
+				</div>
 					</td>
 			</tr>
 		</table>
 	</form>
-	<div>
-
-		<table border="3" bgcolor="lightblue">
+	</div>
+	</td>
+	</tr>
+ </table>
+	
+		
+	</div>
+<div align="center">
+		<table width="80%" border="3" bgcolor="lightblue">
 			<tr>
-				<td>Product ID</td>
-				<td>Product Name</td>
-				<td>Product Description</td>
-				<td>Category ID</td>
-				<td>Supplier ID</td>
-				<td>Product Price</td>
-				<td>Actions</td>
+				<td><div align="center"><b>ID</b></div></td>
+				<td><div align="center"><b>Name</b></div></td>
+				<td><div align="center"><b>Description</b></div></td>
+				<td><div align="center"><b>Category ID</b></div></td>
+				<td><div align="center"><b>Supplier ID</b></div></td>
+				<td><div align="center"><b>Price</b></div></td>
+				<td><div align="center"><b>Image</b></div></td>
+				<td><div align="center"><b>Actions</b></div></td>
 			</tr>
 
 			<c:forEach var="product" items="${allProducts}">
 				<tr>
-					<td>${product.id}</td>
-					<td>${product.name}</td>
-					<td>${product.description}</td>
-					<td>${product.categoryID}</td>
-					<td>${product.supplierID}</td>
-					<td>${product.price}</td>
-					<td><img alt="No Image Uploaded" src="${productImagesDirectory}${product.id}.png"/></td>
+					<td><div align="center"><b>${product.id}</div></td>
+					<td><div align="center">${product.name}</div></td>
+					<td><div align="center">${product.description}</div></td>
+					<td><div align="center">${product.categoryID}</div></td>
+					<td><div align="center">${product.supplierID}</div></td>
+					<td><div align="center">${product.price}</div></td>
+					<td><div align="center">
+					<img width= "100px" height="100px" alt="No Image Uploaded" src="resources/images/products/${product.name}.png"/>
+					</div></td>
 
-					<td><a href="product/delete/?id=${product.id}">Delete</a>/ <a
-						href="product/edit/?id=${product.id}">Edit</a>
+					<td><div align="center">
+					<a class="btn btn-lg btn-primary" href="product/delete/?id=${product.id}" role="button">
+					<span class="glyphicon glyphicon-trash "></span></a>
+					&nbsp;
+					<a class="btn btn-lg btn-primary" href="product/edit/?id=${product.id}" role="button">
+					<span class="glyphicon glyphicon-pencil "></span></a>
+					</div></td>
 				</tr>
 			</c:forEach>
 		</table>

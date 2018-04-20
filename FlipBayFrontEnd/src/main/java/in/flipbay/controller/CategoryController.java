@@ -34,17 +34,16 @@ public class CategoryController {
 	
 	//this controller to save a category into database
 	@PostMapping("/category/save")
-	public ModelAndView saveOrUpdateCategory(@RequestParam("categoryName") String categoryName
+	public ModelAndView saveCategory(@RequestParam("categoryName") String categoryName
 			, @RequestParam("categoryDescription") String categoryDescription, @RequestParam("file") MultipartFile file)  {	
 		
 		ModelAndView mv = new ModelAndView("redirect:/category");	
 		category.setName(categoryName);
 		category.setDescription(categoryDescription);
 		
-		int categoryID = category.getId();
 
 		
-		if(categoryDAO.saveOrUpdate(category)) {	
+		if(categoryDAO.save(category)) {	
 			List<Category> categories = categoryDAO.list();
 			httpSession.setAttribute("categories", categories);
 			
@@ -52,19 +51,49 @@ public class CategoryController {
 			String categoryImagesDirectory = baseImageDirectory + "categories\\";
 			httpSession.setAttribute("categoryImagesDirectory", categoryImagesDirectory);
 			
-			fileUtil.fileCopyNIO(file, categoryID + ".png", categoryImagesDirectory);
+			fileUtil.fileCopyNIO(file, categoryName + ".png", categoryImagesDirectory);
 			mv.addObject("uploadSuccessMessage", "File uploaded Successfully");
 			
-			mv.addObject("saveOrUpdateCategorySuccessMessage","The category saved successfully");	
+			mv.addObject("saveCategorySuccessMessage","The category saved successfully");	
 			mv.addObject("selectedCategory", category);
 		}
 		else {
-			mv.addObject("saveOrUpdateCategoryErrorMessage",true);
+			mv.addObject("saveCategoryErrorMessage",true);
 		}
 		
 		return mv;
 	}
 	
+	
+	@PostMapping("/category/update")
+	public ModelAndView updateCategory(@RequestParam("categoryName") String categoryName
+			, @RequestParam("categoryDescription") String categoryDescription, @RequestParam("file") MultipartFile file)  {	
+		
+		ModelAndView mv = new ModelAndView("redirect:/category");	
+		category.setName(categoryName);
+		category.setDescription(categoryDescription);
+		
+
+		
+		if(categoryDAO.update(category)) {	
+			List<Category> categories = categoryDAO.list();
+			httpSession.setAttribute("categories", categories);
+			
+			
+			fileUtil.fileCopyNIO(file, categoryName + ".png", ((String)httpSession.getAttribute("baseImageDirectory"))+"categories\\");
+			mv.addObject("uploadSuccessMessage", "File uploaded Successfully");
+			
+			mv.addObject("updateCategorySuccessMessage","The category updated successfully");	
+			mv.addObject("selectedCategory", category);
+		}
+		else {
+			mv.addObject("updateCategoryErrorMessage",true);
+		}
+		httpSession.removeAttribute("selectedCategory");
+
+		
+		return mv;
+	}
 	
 	
 	//this controller is to update the category details
@@ -73,7 +102,7 @@ public class CategoryController {
 		List<Category> categories = categoryDAO.list();
 		httpSession.setAttribute("categories", categories);
 		ModelAndView mv = new ModelAndView("redirect:/category");
-		mv.addObject("isAdminClickedEditCategories",true);
+		//mv.addObject("isAdminClickedEditCategories",true);
 		category = categoryDAO.get(id);
 		httpSession.setAttribute("selectedCategory", category);
 		return mv;

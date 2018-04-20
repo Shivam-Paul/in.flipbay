@@ -6,7 +6,9 @@ import in.flipbay.domain.User;
 
 public interface UserDAO {
 
-	public boolean saveOrUpdate(User user);
+	public boolean save(User user);
+	
+	public boolean update(User user);
 
 	public User get(String id);
 
@@ -16,6 +18,4 @@ public interface UserDAO {
 
 	public User validate(String id, String password);
 	
-	public boolean register(User user);
-
 }

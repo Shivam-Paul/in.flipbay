@@ -39,7 +39,7 @@ public class SupplierDAOTestCase {
 	public void savesupplierTestCase() {
 		
 		supplier.setName("obj1");
-		boolean status = supplierDAO.saveOrUpdate(supplier);
+		boolean status = supplierDAO.save(supplier);
 		assertEquals("save supplier test case", true, status);
 	}
 	
@@ -47,7 +47,7 @@ public class SupplierDAOTestCase {
 	public void updatesupplierTestCase() {
 		
 		supplier.setName("test1");
-		boolean status = supplierDAO.saveOrUpdate(supplier);
+		boolean status = supplierDAO.update(supplier);
 		assertEquals("update category test case", true, status);
 		
 	}

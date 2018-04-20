@@ -43,14 +43,14 @@ public class CategoryDAOTestCase {
 	public void saveCategoryTestCase() {
 		
 		category.setName("obj1");
-		boolean status = categoryDAO.saveOrUpdate(category);
+		boolean status = categoryDAO.save(category);
 		assertEquals("save category test case", true, status);
 	}
 	
 	@Test
 	public void updateCategoryTestCase() {
 		category.setName("test1");
-		boolean status = categoryDAO.saveOrUpdate(category);
+		boolean status = categoryDAO.update(category);
 		assertEquals("update category test case", true, status);
 		
 	}

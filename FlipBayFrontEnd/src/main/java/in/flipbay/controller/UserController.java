@@ -2,44 +2,47 @@ package in.flipbay.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import in.flipbay.dao.CartDAO;
+import in.flipbay.dao.CartItemDAO;
 import in.flipbay.dao.CategoryDAO;
 import in.flipbay.dao.UserDAO;
 import in.flipbay.domain.Cart;
+import in.flipbay.domain.CartItem;
 import in.flipbay.domain.Category;
 import in.flipbay.domain.User;
+import in.flipbay.util.FileUtil;
 
 //Annotation
 @Controller
 public class UserController {
 	
-	@Autowired
-	private UserDAO userDAO;
+	@Autowired	private UserDAO userDAO;
+	
+	@Autowired	private User user;
+	
+	@Autowired	private HttpSession httpSession;
+	
+	@Autowired  private CategoryDAO categoryDAO;
+	
+	@Autowired	private CartItemDAO cartItemDAO;
+	
+	@Autowired	private Cart cart;
+	
+	@Autowired  private CartItem cartItem;
 	
 	@Autowired
-	private User user;
-	
-	@Autowired
-	private HttpSession httpSession;
-	
-	@Autowired private CategoryDAO categoryDAO;
-	
-	@Autowired private CartDAO cartDAO;
-	
+	private FileUtil fileUtil;
+		
 	
 	@PostMapping("validate")
 	public ModelAndView validate(@RequestParam("uname") String username, @RequestParam("psw") String password)
@@ -56,15 +59,21 @@ public class UserController {
 			httpSession.setAttribute("welcomeMessage", user.getName());
 			httpSession.setAttribute("loggedInUserID", user.getEmailID());
 			httpSession.setAttribute("userLoggedIn", true);
-			List<Cart> myCart = cartDAO.list(user.getEmailID());
+			List<CartItem> myCart = cartItemDAO.list(cartItem.getCartID());
 			httpSession.setAttribute("cartSize", myCart.size());
+			cart = cartItemDAO.getCart(username);
+			httpSession.setAttribute("userCartID", cart.getId());
 			
 			if(user.getRole()=='A')
 			{
 				httpSession.setAttribute("isAdmin", true);
-				//mv.addObject("isAdmin", true);
+			}
+			else {
+				httpSession.setAttribute("isAdmin", false);
 			}
 		}
+		mv.addObject("isUserClickedHome",true);
+
 		return mv;
 	}
 		
@@ -82,13 +91,15 @@ public class UserController {
 	
 	
 	//This method is used for user registration
-	@PostMapping("/user/save")
+	@PostMapping("/register")
 	public ModelAndView saveUser(@RequestParam("emailID") String emailID, @RequestParam("name") String name,
 			@RequestParam("password") String password,@RequestParam("mobile") String mobile,
-			
 			@RequestParam("securityQuestion") String securityQuestion,@RequestParam("securityAnswer") String securityAnswer)  {
-		ModelAndView mv = new ModelAndView("redirect:/login");
+		
+		ModelAndView mv = new ModelAndView("redirect:/registration");
+		System.out.println(emailID);
 		user.setEmailID(emailID);
+		System.out.println(emailID);
 		user.setName(name);
 		user.setPwd(password);
 		user.setMobile(mobile);
@@ -96,12 +107,21 @@ public class UserController {
 		user.setSecurityAnswer(securityAnswer);
 		
 		
-		if(userDAO.saveOrUpdate(user) == true) { 	
+		if(userDAO.save(user) == true) { 
+			cart.setGrandTotal(0.0);
+			cart.setCartItem(0);
+			cart.setEmailID(emailID);
+			
+			cartItemDAO.addCart(cart);
+
 			mv.addObject("successMessage","The user saved successfully");	
+			mv.addObject("redirectToLogin",true);
 		}
 		else {	
 			mv.addObject("failureMessage", "The user failed to save");
 		}
+		
+		
 		return mv;
 	}
 	
@@ -174,24 +194,13 @@ public class UserController {
 		user.setSecurityQuestion(user.getSecurityQuestion());
 		user.setSecurityAnswer(user.getSecurityAnswer());
 		user.setRole(user.getRole());
-		userDAO.saveOrUpdate(user);
+		userDAO.update(user);
 		
 		
 		mv.addObject("passwordChanged", "Your Password has been updated successfully");
 		
 		return mv;
 	}
-	
-	
-	
-	  
-	  @PostMapping("/registerProcess")
-	  public ModelAndView addUser(HttpServletRequest request, HttpServletResponse response,
-	  @ModelAttribute("user") User user,Model model) {
-		  model.addAttribute("user", user);
-	  userDAO.saveOrUpdate(user);
-	  return new ModelAndView("welcome", "Name", user.getName());
-	  }
 	  
 	  @GetMapping("/logout")
 	  public ModelAndView logout() {
@@ -204,6 +213,9 @@ public class UserController {
 			httpSession.setAttribute("allCategories", allCategories);
 		  
 		  user = null;
+		  mv.addObject("isUserClickedHome",true);
+		  
+		  httpSession.setAttribute("userLoggedIn", false);
 		  
 		  return mv;
 		  
@@ -214,10 +226,43 @@ public class UserController {
 		 
 		 ModelAndView mv = new ModelAndView("home");
 		 String userId = (String)httpSession.getAttribute("loggedInUserID");
-		 System.out.println(userId);
 		 user = userDAO.get(userId);
 		 httpSession.setAttribute("userDetails", user);
 		 mv.addObject("isUserClickedEditProfile", true);
+		 return mv;
+	 }
+	 
+	 @PostMapping("/changeProfile")
+	 public ModelAndView changeProfile(@RequestParam("name") String name,@RequestParam("mobile") String mobile,
+				@RequestParam("securityQuestion") String securityQuestion,@RequestParam("securityAnswer") String securityAnswer,
+				 @RequestParam("file") MultipartFile file) {
+		 
+		 ModelAndView mv = new ModelAndView("home");
+		 
+		 user.setName(name);
+		 user.setMobile(mobile);
+		 user.setSecurityQuestion(securityQuestion);
+		 user.setSecurityAnswer(securityAnswer);
+		 
+		 String userImagesDirectory = ((String)httpSession.getAttribute("baseImageDirectory"))+"users\\";
+			httpSession.setAttribute("userImagesDirectory", userImagesDirectory);
+			mv.addObject("saveProductSuccessMessage","The product saved successfully");	
+			if(fileUtil.fileCopyNIO(file, user.getEmailID() + ".png", userImagesDirectory)) {
+				
+				mv.addObject("fileUploadSuccessMessage", "File uploaded Successfully");
+			}
+			else {
+				
+				mv.addObject("fileUploadErrorMessage", "File failed to upload");
+			}
+		 
+		 if(userDAO.update(user)) {
+			 mv.addObject("editProfileSuccessMessage", "Profile edited Successfully");
+		 }
+		 
+		 else {
+			 mv.addObject("editProfileErrorMessage", "The profile could not be edited");
+		 }
 		 return mv;
 		 
 	 }

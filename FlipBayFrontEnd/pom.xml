@@ -51,7 +51,7 @@
 </dependency>
 
    
-    <!-- https://mvnrepository.com/artifact/junit/junit -->
+<!-- https://mvnrepository.com/artifact/junit/junit -->
 <dependency>
     <groupId>junit</groupId>
     <artifactId>junit</artifactId>
@@ -117,7 +117,6 @@
     <groupId>ch.qos.logback</groupId>
     <artifactId>logback-classic</artifactId>
     <version>1.2.3</version>
-    <scope>test</scope>
 </dependency>
 
 

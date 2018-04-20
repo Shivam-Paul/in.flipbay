@@ -11,10 +11,12 @@
 <body>
 <h2>
 <c:if test="${isAdmin==true}">
-<a href="category">Manage Categories</a>
-<a href="supplier">Manage Suppliers</a>
-<a href="product">Manage Products</a>
-<a href="user">Manage Users</a>
+<div align="center">
+<a class="btn btn-lg btn-primary" href="category" role="button">Manage Categories</a>
+<a class="btn btn-lg btn-primary" href="supplier" role="button">Manage Suppliers</a>
+<a class="btn btn-lg btn-primary" href="product" role="button">Manage Products</a>
+<a class="btn btn-lg btn-primary" href="user" role="button">Manage Users</a>
+</div>
 </c:if>
 </h2>
 

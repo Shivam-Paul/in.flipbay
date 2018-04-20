@@ -39,17 +39,15 @@ public class SupplierController {
 		
 		supplier.setName(supplierName);
 		supplier.setAddress(supplierAddress);
-		
-		int supplierID = supplier.getId();
-
-		if(supplierDAO.saveOrUpdate(supplier)) {	
+	
+		if(supplierDAO.save(supplier)) {	
 			List<Supplier> suppliers = supplierDAO.list();
 			httpSession.setAttribute("suppliers", suppliers);
 			
 			String supplierImagesDirectory = ((String)httpSession.getAttribute("baseImageDirectory"))+"suppliers\\";
-			httpSession.setAttribute("productImagesDirectory", supplierImagesDirectory);
+			httpSession.setAttribute("supplierImagesDirectory", supplierImagesDirectory);
 			
-			fileUtil.fileCopyNIO(file, supplierID + ".png", supplierImagesDirectory);
+			fileUtil.fileCopyNIO(file, supplierName + ".png", supplierImagesDirectory);
 			mv.addObject("uploadSuccessMessage", "File uploaded Successfully");
 			
 			mv.addObject("selectedSupplier", supplier);
@@ -58,6 +56,33 @@ public class SupplierController {
 		else {
 			mv.addObject("supplierSaveErrorMessage","The supplier failed to save");
 		}
+		
+		return mv;
+	}
+	
+	@PostMapping("supplier/update")
+	public ModelAndView updateSupplier(@RequestParam("supplierName") String supplierName
+			, @RequestParam("supplierAddress") String supplierAddress, @RequestParam("file") MultipartFile file)  {
+		ModelAndView mv = new ModelAndView("redirect:/supplier");	
+		
+		supplier.setName(supplierName);
+		supplier.setAddress(supplierAddress);
+	
+		if(supplierDAO.update(supplier)) {	
+			List<Supplier> suppliers = supplierDAO.list();
+			httpSession.setAttribute("suppliers", suppliers);
+			
+			fileUtil.fileCopyNIO(file, supplierName + ".png", ((String)httpSession.getAttribute("baseImageDirectory"))+"suppliers\\");
+			mv.addObject("uploadSuccessMessage", "File uploaded Successfully");
+			
+			mv.addObject("selectedSupplier", supplier);
+			mv.addObject("supplierSaveSuccessMessage","The supplier saved successfully");
+		}
+		else {
+			mv.addObject("supplierSaveErrorMessage","The supplier failed to save");
+		}
+		
+		httpSession.removeAttribute("selectedSupplier");
 		
 		return mv;
 	}
